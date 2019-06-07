@@ -1,0 +1,22 @@
+.login {
+    background-color: #0083CA;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+  .login-block{
+    box-shadow: 0px 0 10px rgba(34,36,38,.15) !important;
+  }
+  .login-block-form-field{   
+    background-color: #FFF;
+    border-radius: 0 3px 3px 0;  
+  }
+  .login-character-image{
+    margin-bottom: -14px;
+  }
+
+  #magalog-P\%E1gina\%201{
+    display: none;
+  }
