@@ -13,6 +13,7 @@ const Routes = () => (
   <Switch>
     <Route exact path="/" component={Home} />
     <Route path="/login" component={Login} />
+    ({isAdmin() ? <Route path="/cadastros/cidades" component={Cities} /> : ''})
     ({isAdmin() ? <Route path="/cadastros/usuarios" component={Users} /> : ''})
   </Switch>
 );
