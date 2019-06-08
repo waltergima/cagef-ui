@@ -5,6 +5,10 @@ const subItens = () => {
     id: 2,
     name: "Cidades",
     route: "/cadastros/cidades"
+  }, {
+    id: 3,
+    name: "Ministérios / Cargos",
+    route: "/cadastros/ministerios-cargos"
   }];
 
   return subItens;
