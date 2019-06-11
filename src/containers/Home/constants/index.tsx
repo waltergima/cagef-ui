@@ -2,14 +2,28 @@ import { isAdmin } from "../../../config/Utils";
 
 const subItens = () => {
   let subItens = [{
-    id: 2,
-    name: "Cidades",
-    route: "/cadastros/cidades"
-  }, {
-    id: 3,
-    name: "Ministérios / Cargos",
-    route: "/cadastros/ministerios-cargos"
+    id: 1,
+    name: "Casas de Oração",
+    route: "/cadastros/casas-oracao"
   }];
+
+  if (isAdmin()) {
+    subItens = subItens.concat([
+      {
+        id: 2,
+        name: "Cidades",
+        route: "/cadastros/cidades"
+      }, {
+        id: 3,
+        name: "Ministérios / Cargos",
+        route: "/cadastros/ministerios-cargos"
+      }, {
+        id: 5,
+        name: "Usuários",
+        route: "/cadastros/usuarios"
+      }
+    ]);
+  }
 
   return subItens;
 };
