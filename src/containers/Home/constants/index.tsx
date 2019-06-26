@@ -5,6 +5,10 @@ const subItens = () => {
     id: 1,
     name: "Casas de Oração",
     route: "/cadastros/casas-oracao"
+  }, {
+    id: 4,
+    name: "Voluntários",
+    route: "/cadastros/voluntarios"
   }];
 
   if (isAdmin()) {

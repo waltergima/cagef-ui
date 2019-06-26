@@ -13,7 +13,10 @@ const Routes = () => (
   <Switch>
     <Route exact path="/" component={Home} />
     <Route path="/login" component={Login} />
+    <Route path="/cadastros/casas-oracao" component={PrayingHouses} />
+    <Route path="/cadastros/voluntarios" component={Volunteers} />
     ({isAdmin() ? <Route path="/cadastros/cidades" component={Cities} /> : ''})
+    ({isAdmin() ? <Route path="/cadastros/ministerios-cargos" component={MinisteriesOrPositions} /> : ''})
     ({isAdmin() ? <Route path="/cadastros/usuarios" component={Users} /> : ''})
   </Switch>
 );
