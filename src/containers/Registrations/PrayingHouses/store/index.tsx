@@ -80,7 +80,7 @@ export class PrayingHousesStore {
     },
     {
       Header: "Cidade",
-      id: "city",
+      id: "city.name",
       Cell: (row: any) => { return (<span> {row.original.city.name}</span >) }
     },
     {
@@ -252,7 +252,7 @@ export class PrayingHousesStore {
 
   private resetUpdate(selectedPrayingHouse?: PrayingHouse) {
     this.form.resetUpdate({
-      reportCode: this.reportCode,
+      reportCode: selectedPrayingHouse ? selectedPrayingHouse.reportCode : null,
       district: selectedPrayingHouse ? selectedPrayingHouse.district : null,
       city: selectedPrayingHouse ? selectedPrayingHouse.city.id : null
     });
