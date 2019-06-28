@@ -13,6 +13,7 @@ import { ORIGINAL_FORM_TEMPLATE } from "../constants";
 import { create, findAll, remove, update } from '../services';
 import { transformVolunteer } from '../transformer';
 import { Volunteer } from "../types";
+import * as dateFns from 'date-fns';
 
 class VolunteersStore {
   @observable offset: number = 0;
@@ -302,6 +303,7 @@ class VolunteersStore {
   async mountMinistryOrPositionSelect(volunteerSelected?: Volunteer) {
     let { data: response } = await getMinistryOrPositionList({ offset: 0, limit: 100 });
     this.formTemplate[0].row.fields[0].data = this.mountMinistryOrPositionSelectValues(response.content);
+    this.formTemplate[0].row.fields[0].defaultData = [];
     if (volunteerSelected) {
       this.formTemplate[0].row.fields[0].defaultData = this.mountMinistryOrPositionSelectValues(volunteerSelected.ministryOrPosition);
     }
@@ -357,13 +359,13 @@ class VolunteersStore {
       phoneNumber: volunteerSelected ? volunteerSelected.phoneNumber : null,
       celNumber: volunteerSelected ? volunteerSelected.celNumber : null,
       email: volunteerSelected ? volunteerSelected.email : null,
-      dateOfBirth: volunteerSelected ? new Date(volunteerSelected.dateOfBirth) : null,
+      dateOfBirth: volunteerSelected ? dateFns.parse(volunteerSelected.dateOfBirth) : null,
       naturalness: volunteerSelected && volunteerSelected.naturalness ? volunteerSelected.naturalness.id : null,
-      dateOfBaptism: volunteerSelected ? new Date(volunteerSelected.dateOfBaptism) : null,
+      dateOfBaptism: volunteerSelected ? dateFns.parse(volunteerSelected.dateOfBaptism) : null,
       cpf: volunteerSelected ? volunteerSelected.cpf : null,
       rg: volunteerSelected ? volunteerSelected.rg : null,
       maritalStatus: volunteerSelected ? volunteerSelected.maritalStatus : null,
-      ministryApresentationDate: volunteerSelected ? new Date(volunteerSelected.ministryApresentationDate) : null,
+      ministryApresentationDate: volunteerSelected ? dateFns.parse(volunteerSelected.ministryApresentationDate) : null,
       promise: volunteerSelected ? volunteerSelected.promise : null,
       prayingHouse: volunteerSelected && volunteerSelected.prayingHouse ? volunteerSelected.prayingHouse.reportCode : null
     });
@@ -373,9 +375,10 @@ class VolunteersStore {
     this.formTemplate[3].row.fields[1].defaultValue = volunteerSelected ? volunteerSelected.celNumber : null;
     this.formTemplate[4].row.fields[1].defaultValue = volunteerSelected ? volunteerSelected.cpf : null;
     this.formTemplate[2].row.fields[2].defaultValue = volunteerSelected ? volunteerSelected.zipCode : null;
-    this.formTemplate[3].row.fields[3].defaultValue = volunteerSelected ? volunteerSelected.dateOfBirth : null;
-    this.formTemplate[4].row.fields[0].defaultValue = volunteerSelected ? volunteerSelected.dateOfBaptism : null;
-    this.formTemplate[5].row.fields[0].defaultValue = volunteerSelected ? volunteerSelected.ministryApresentationDate : null;
+    this.formTemplate[3].row.fields[3].defaultValue = volunteerSelected ? dateFns.parse(volunteerSelected.dateOfBirth) : null;
+    this.formTemplate[4].row.fields[0].defaultValue = volunteerSelected ? dateFns.parse(volunteerSelected.dateOfBaptism) : null;
+    this.formTemplate[5].row.fields[0].defaultValue = volunteerSelected ? dateFns.parse(volunteerSelected.ministryApresentationDate) : null;
+    this.formTemplate[5].row.fields[0].defaultDate = volunteerSelected ? this.mountMinistryOrPositionSelectValues(volunteerSelected.ministryOrPosition) : null;
 
   }
 
