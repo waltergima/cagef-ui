@@ -1,85 +1,77 @@
 import axios from "axios";
 import jwt from "jsonwebtoken";
-import { userFake } from "./userFake";
-
-let header: any;
-if (window.sessionStorage.getItem("auth_token")) {
-  header = {
-    headers: {
-      "Content-Type": "application/json",
-      authorization: window.sessionStorage.getItem("auth_token")
-    }
-  };
-} else {
-  header = {
-    headers: {
-      "Content-Type": "application/json",
-      authorization: process.env.REACT_APP_API_TOKEN
-    }
-  };
-}
 
 class magaRequest {
   constructor() { }
 
   get(endpoint: string, modelName: any = {}) {
     return new Promise((resolve, reject) => {
-      axios
-        .get(endpoint, header)
-        .then(response => {
-          treatSuccess(response, resolve);
-        })
-        .catch(error => {
-          treatException(error, modelName, resolve, reject);
-        });
+      return refreshToken().then(() => {
+        axios
+          .get(endpoint, getHeaders())
+          .then(response => {
+            treatSuccess(response, resolve);
+          })
+          .catch(error => {
+            treatException(error, modelName, resolve, reject);
+          });
+      });
     });
   }
   post(endpoint: string, body: any = {}, modelName: any = {}) {
     return new Promise((resolve, reject) => {
-      axios
-        .post(endpoint, body, header)
-        .then(response => {
-          treatSuccess(response, resolve);
-        })
-        .catch(error => {
-          treatException(error, modelName, resolve, reject);
-        });
+      return refreshToken().then(() => {
+        axios
+          .post(endpoint, body, getHeaders())
+          .then(response => {
+            treatSuccess(response, resolve);
+          })
+          .catch(error => {
+            treatException(error, modelName, resolve, reject);
+          });
+      });
     });
   }
   put(endpoint: string, body: any = {}, modelName: any = {}) {
     return new Promise((resolve, reject) => {
-      axios
-        .put(endpoint, body, header)
-        .then(response => {
-          treatSuccess(response, resolve);
-        })
-        .catch(error => {
-          treatException(error, modelName, resolve, reject);
-        });
+      return refreshToken().then(() => {
+        axios
+          .put(endpoint, body, getHeaders())
+          .then(response => {
+            treatSuccess(response, resolve);
+          })
+          .catch(error => {
+            treatException(error, modelName, resolve, reject);
+          });
+      });
     });
   }
   patch(endpoint: string, body: any = {}, modelName: any = {}) {
     return new Promise((resolve, reject) => {
-      axios
-        .patch(endpoint, body, header)
-        .then(response => {
-          treatSuccess(response, resolve);
-        })
-        .catch(error => {
-          treatException(error, modelName, resolve, reject);
-        });
+      return refreshToken().then(() => {
+        axios
+          .patch(endpoint, body, getHeaders())
+          .then(response => {
+            treatSuccess(response, resolve);
+          })
+          .catch(error => {
+            treatException(error, modelName, resolve, reject);
+          });
+      });
     });
   }
   delete(endpoint: string, modelName: any = {}) {
     return new Promise((resolve, reject) => {
-      axios
-        .delete(endpoint, header)
-        .then(response => {
-          treatSuccess(response, resolve);
-        })
-        .catch(error => {
-          treatException(error, modelName, resolve, reject);
-        });
+      return refreshToken().then(() => {
+        axios
+          .delete(endpoint, getHeaders())
+          .then(response => {
+            treatSuccess(response, resolve);
+          })
+          .catch(error => {
+            treatException(error, modelName, resolve, reject);
+          });
+      });
     });
   }
 }
@@ -120,5 +112,40 @@ const treatException = (
     }
   }
 };
+
+const refreshToken = async () => {
+  let token = window.sessionStorage.getItem("auth_token");
+  if (token) {
+    const userData: any = jwt.decode(token.replace('Bearer ', ''));
+    if (userData) {
+      let difference = new Date(userData.exp * 1000).getMinutes() - (new Date().getMinutes());
+
+      if (difference >= 0 && difference < 3) {
+        let { headers: response } = await axios.post(`${process.env.REACT_APP_API_URL}/auth/refresh_token`, null, getHeaders());
+        window.sessionStorage.setItem("auth_userData", response.authorization.replace('Bearer ', ''));
+        window.sessionStorage.setItem("auth_token", response.authorization);
+      }
+    }
+  }
+}
+
+const getHeaders = () => {
+  if (window.sessionStorage.getItem("auth_token")) {
+    return {
+      headers: {
+        "Content-Type": "application/json",
+        authorization: window.sessionStorage.getItem("auth_token")
+      }
+    };
+  }
+
+  return {
+    headers: {
+      "Content-Type": "application/json",
+      authorization: process.env.REACT_APP_API_TOKEN
+    }
+  };
+
+}
 
 export default new magaRequest();
