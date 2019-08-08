@@ -4,7 +4,6 @@ import { ORIGINAL_FORM_TEMPLATE } from '../constants';
 import { login } from "../services";
 import { transformUser } from "../transformer";
 import { LoginRequest } from "../types";
-import JWT from 'jsonwebtoken';
 
 export class LoginStore {
     @observable formState: any = {};
@@ -15,18 +14,7 @@ export class LoginStore {
     @observable form: any = {};
     @observable formTemplate: any = ORIGINAL_FORM_TEMPLATE;
     @observable options: any = [];
-    optionsSearch = [{
-        key: 1,
-        text: 'Casa Branca',
-        value: 1
-    }, {
-        key: 3,
-        text: 'Aguas da Prata',
-        value: 3
-    }]
 
-    @action
-    handleSearchChange = (e: any, { searchQuery }: any) => this.options = this.optionsSearch
 
     @action
     async login(user: LoginRequest) {

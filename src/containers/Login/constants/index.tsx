@@ -49,13 +49,13 @@ export const ORIGINAL_FORM_TEMPLATE: any[] = [
     row: {
       fields: [
         {
-          label: "Salvar",
+          label: "Login",
           name: "action",
           type: "submit",
           value: "",
           placeholder: "",
           color: "green",
-          icon: "save",
+          icon: "sign in",
           floated: "right",
           required: false,
           validations: {},
