@@ -3,6 +3,8 @@ import { inject, observer } from "mobx-react";
 import * as React from "react";
 import Notifications from "react-notify-toast";
 import { LoginStore } from './store';
+import { notify } from "react-notify-toast";
+import { colorMessage } from "../../config/Const";
 
 interface Props {
     LoginStore: LoginStore;
@@ -11,6 +13,22 @@ interface Props {
 @inject("LoginStore")
 @observer
 export default class Login extends React.Component<Props> {
+  componentDidMount() {
+    const props: any = this.props;
+    if(props.location.search.includes('expired=true')) {
+    try{
+      notify.show(
+        `Sessão expirada. Por favor realize o login novamente`,
+        "custom",
+        10000,
+        colorMessage.info,
+      );
+      } catch(error) {
+        console.log('errorrr: ' + error.stack);
+      }
+    }
+  }
+  
     render() {
         return (
             <div className="login">

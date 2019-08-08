@@ -1,6 +1,8 @@
 import * as React from "react";
-import { MagaNav, Divider, Grid, Responsive, MagaMenu } from "maga-components";
+import { MagaNav, Divider, Grid, Responsive, MagaSideBar } from "maga-components";
 import { userData, isAdmin } from '../../config/Utils';
+import { SYSTEM } from "./constants";
+import history from "../../routes/history";
 interface Props {
   children: any;
 }
@@ -21,14 +23,27 @@ export default class Main extends React.Component<Props> {
         <div className="page">
           <Grid>
             <Grid.Column color="blue" width={width > 1700 ? 2 : 3}>
-              <MagaMenu name="CAGEF" logo="" version="1.0.0"
+              <MagaSideBar system={SYSTEM}
+              onSelectSideMenu={(route: any) => {
+                history.push(`${process.env.PUBLIC_URL}${route}`);
+              }}
+              onSelectDropDownUserMenu={(item: any) => {
+                history.push(`${process.env.PUBLIC_URL}${item.route}`);
+              }}
+              onSelectMessage={(item: any) => {
+                console.log(item);
+              }}
+              onLogout={() => {
+                window.location.href = `${process.env.REACT_APP_PUBLIC_URL}`;
+              }}
+              onSelectLogo={() => {
+                window.location.href = `${process.env.REACT_APP_PUBLIC_URL}`;
+              }}
                 menu={[
                   {
-                    name: "Home",
+                    title: "Home",
                     icon: "home",
-                    ref: "home",
-                    route: "/",
-                    active: true
+                    route: "/"
                   },
                   {
                     name: "Cadastros",
@@ -36,28 +51,28 @@ export default class Main extends React.Component<Props> {
                     ref: "registration",
                     route: "/cadastros",
                     subItens: [{
-                      name: "Casas de Oração",
+                      title: "Casas de Oração",
                       ref: "prayingHouses",
                       route: "/cadastros/casas-oracao"
                     }, {
-                      name: "Voluntários",
+                      title: "Voluntários",
                       ref: "volunteers",
                       route: "/cadastros/voluntarios"
                     }, {
                       ...(isAdmin() && {
-                        name: "Cidades",
+                        title: "Cidades",
                         ref: "cities",
                         route: "/cadastros/cidades"
                       })
                     }, {
                       ...(isAdmin() && {
-                        name: "Ministérios / Cargos",
+                        title: "Ministérios / Cargos",
                         ref: "ministeriesOrPositions",
                         route: "/cadastros/ministerios-cargos"
                       })
                     }, {
                       ...(isAdmin() && {
-                        name: "Usuários",
+                        title: "Usuários",
                         ref: "users",
                         route: "/cadastros/usuarios"
                       })

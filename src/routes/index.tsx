@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Router } from "react-router-dom";
 import { isAdmin } from "../config/Utils";
 import Home from "../containers/Home";
 import Login from "../containers/Login";
@@ -8,9 +8,11 @@ import MinisteriesOrPositions from "../containers/Registrations/MinisteriesOrPos
 import PrayingHouses from "../containers/Registrations/PrayingHouses";
 import Users from "../containers/Registrations/Users";
 import Volunteers from "../containers/Registrations/Volunteers";
+import history from "./history";
 
 const Routes = () => (
-  <Switch>
+  <Router history={history}>
+    <div>
     <Route exact path="/" component={Home} />
     <Route path="/login" component={Login} />
     <Route path="/cadastros/casas-oracao" component={PrayingHouses} />
@@ -18,7 +20,8 @@ const Routes = () => (
     ({isAdmin() ? <Route path="/cadastros/cidades" component={Cities} /> : ''})
     ({isAdmin() ? <Route path="/cadastros/ministerios-cargos" component={MinisteriesOrPositions} /> : ''})
     ({isAdmin() ? <Route path="/cadastros/usuarios" component={Users} /> : ''})
-  </Switch>
+    </div>
+  </Router>
 );
 
 export default Routes;

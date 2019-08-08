@@ -47,7 +47,7 @@ export default class MinisteriesOrPositions extends React.Component<Props> {
                             title="Adicionar ministério / cargo"
                             formTemplate={this.props.MinisteriesOrPositionsStore.formCreateMinistryOrPosition}
                             loading={this.props.MinisteriesOrPositionsStore.loadForm}
-                            onSubmit={async data => {
+                            onSubmit={async (data: any) => {
                                 try {
                                     this.props.MinisteriesOrPositionsStore.saveMinistryOrPosition(data);
                                 } catch (error) {

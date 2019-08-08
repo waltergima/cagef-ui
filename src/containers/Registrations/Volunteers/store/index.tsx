@@ -359,13 +359,13 @@ class VolunteersStore {
       phoneNumber: volunteerSelected ? volunteerSelected.phoneNumber : null,
       celNumber: volunteerSelected ? volunteerSelected.celNumber : null,
       email: volunteerSelected ? volunteerSelected.email : null,
-      dateOfBirth: volunteerSelected ? dateFns.parse(volunteerSelected.dateOfBirth) : null,
+      dateOfBirth: volunteerSelected ? dateFns.parseISO(volunteerSelected.dateOfBirth) : null,
       naturalness: volunteerSelected && volunteerSelected.naturalness ? volunteerSelected.naturalness.id : null,
-      dateOfBaptism: volunteerSelected ? dateFns.parse(volunteerSelected.dateOfBaptism) : null,
+      dateOfBaptism: volunteerSelected ? dateFns.parseISO(volunteerSelected.dateOfBaptism) : null,
       cpf: volunteerSelected ? volunteerSelected.cpf : null,
       rg: volunteerSelected ? volunteerSelected.rg : null,
       maritalStatus: volunteerSelected ? volunteerSelected.maritalStatus : null,
-      ministryApresentationDate: volunteerSelected ? dateFns.parse(volunteerSelected.ministryApresentationDate) : null,
+      ministryApresentationDate: volunteerSelected ? dateFns.parseISO(volunteerSelected.ministryApresentationDate) : null,
       promise: volunteerSelected ? volunteerSelected.promise : null,
       prayingHouse: volunteerSelected && volunteerSelected.prayingHouse ? volunteerSelected.prayingHouse.reportCode : null
     });
@@ -375,9 +375,9 @@ class VolunteersStore {
     this.formTemplate[3].row.fields[1].defaultValue = volunteerSelected ? volunteerSelected.celNumber : null;
     this.formTemplate[4].row.fields[1].defaultValue = volunteerSelected ? volunteerSelected.cpf : null;
     this.formTemplate[2].row.fields[2].defaultValue = volunteerSelected ? volunteerSelected.zipCode : null;
-    this.formTemplate[3].row.fields[3].defaultValue = volunteerSelected ? dateFns.parse(volunteerSelected.dateOfBirth) : null;
-    this.formTemplate[4].row.fields[0].defaultValue = volunteerSelected ? dateFns.parse(volunteerSelected.dateOfBaptism) : null;
-    this.formTemplate[5].row.fields[0].defaultValue = volunteerSelected ? dateFns.parse(volunteerSelected.ministryApresentationDate) : null;
+    this.formTemplate[3].row.fields[3].defaultValue = volunteerSelected ? dateFns.parseISO(volunteerSelected.dateOfBirth) : null;
+    this.formTemplate[4].row.fields[0].defaultValue = volunteerSelected ? dateFns.parseISO(volunteerSelected.dateOfBaptism) : null;
+    this.formTemplate[5].row.fields[0].defaultValue = volunteerSelected ? dateFns.parseISO(volunteerSelected.ministryApresentationDate) : null;
     this.formTemplate[5].row.fields[0].defaultDate = volunteerSelected ? this.mountMinistryOrPositionSelectValues(volunteerSelected.ministryOrPosition) : null;
 
   }

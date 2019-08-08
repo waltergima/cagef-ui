@@ -35,7 +35,7 @@ export class LoginStore {
 
     @computed
     get formLogin() {
-        return this.formTemplate;
+      return this.formTemplate;
     }
 }
 

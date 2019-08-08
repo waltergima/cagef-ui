@@ -47,7 +47,7 @@ export default class Users extends React.Component<Props> {
                             title="Adicionar usuário"
                             formTemplate={this.props.UsersStore.formCreateUser}
                             loading={this.props.UsersStore.loadForm}
-                            onSubmit={async data => {
+                            onSubmit={async (data: any) => {
                                 try {
                                     this.props.UsersStore.saveUser(data);
                                 } catch (error) {
