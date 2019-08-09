@@ -8,18 +8,20 @@ import MinisteriesOrPositions from "../containers/Registrations/MinisteriesOrPos
 import PrayingHouses from "../containers/Registrations/PrayingHouses";
 import Users from "../containers/Registrations/Users";
 import Volunteers from "../containers/Registrations/Volunteers";
+import VolunteersReport from '../containers/Reports/Volunteers';
 import history from "./history";
 
 const Routes = () => (
   <Router history={history}>
     <div>
-    <Route exact path="/" component={Home} />
-    <Route path="/login" component={Login} />
-    <Route path="/cadastros/casas-oracao" component={PrayingHouses} />
-    <Route path="/cadastros/voluntarios" component={Volunteers} />
-    ({isAdmin() ? <Route path="/cadastros/cidades" component={Cities} /> : ''})
+      <Route exact path="/" component={Home} />
+      <Route path="/login" component={Login} />
+      <Route path="/cadastros/casas-oracao" component={PrayingHouses} />
+      <Route path="/cadastros/voluntarios" component={Volunteers} />
+      ({isAdmin() ? <Route path="/cadastros/cidades" component={Cities} /> : ''})
     ({isAdmin() ? <Route path="/cadastros/ministerios-cargos" component={MinisteriesOrPositions} /> : ''})
     ({isAdmin() ? <Route path="/cadastros/usuarios" component={Users} /> : ''})
+    <Route path="/relatorios/voluntarios" component={VolunteersReport} />
     </div>
   </Router>
 );
