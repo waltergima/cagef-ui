@@ -35,16 +35,9 @@ const subItens = () => {
 export const menuItens = [
   {
     name: "Cadastros",
-    description: "registre todos os itens",
+    description: "Cadastre os voluntários de nossa região",
     icon: "wpforms",
     visible: true,
-    group: [
-      {
-        name: "",
-        route: "",
-        visible: false,
-        items: subItens()
-      }
-    ]
+    items: subItens()
   }
 ];

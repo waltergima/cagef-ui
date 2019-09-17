@@ -1,12 +1,12 @@
 import * as React from "react";
 import { MagaHeader, MagaMenuCards } from "maga-components";
 import Main from "../../components/Main";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 import { menuItens } from './constants';
 import history from "../../routes/history";
 interface Props extends RouteComponentProps<any> { }
 
-class Home extends React.Component<Props> {
+export default class Home extends React.Component<Props> {
   render() {
     return (
       <Main>
@@ -15,13 +15,11 @@ class Home extends React.Component<Props> {
           description="Cadastro Geral de Funções"
           icon="window maximize outline"
         />
-        <MagaMenuCards blockMenu={menuItens} 
-        onSelectItem={(route: any) => {
-              history.push(`${process.env.PUBLIC_URL}${route}`);
-            }}/>
+        <MagaMenuCards blockMenu={menuItens}
+          onSelectItem={(route: any) => {
+            history.push(`${process.env.PUBLIC_URL}${route}`);
+          }} />
       </Main>
     );
   }
 }
-
-export default withRouter<Props>(Home);
