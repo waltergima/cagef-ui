@@ -13,22 +13,18 @@ interface Props {
 @inject("LoginStore")
 @observer
 export default class Login extends React.Component<Props> {
-  componentDidMount() {
-    const props: any = this.props;
-    if(props.location.search.includes('expired=true')) {
-    try{
-      notify.show(
-        `Sessão expirada. Por favor realize o login novamente`,
-        "custom",
-        10000,
-        colorMessage.info,
-      );
-      } catch(error) {
-        console.log('errorrr: ' + error.stack);
-      }
+    componentDidMount() {
+        const props: any = this.props;
+        if (props.location.search.includes('expired=true')) {
+            notify.show(
+                `Sessão expirada. Por favor realize o login novamente`,
+                "custom",
+                10000,
+                colorMessage.info,
+            );
+        }
     }
-  }
-  
+
     render() {
         return (
             <div className="login">
