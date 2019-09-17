@@ -20,3 +20,18 @@
   #magalog-P\%E1gina\%201{
     display: none;
   }
+
+  #Camada_1{
+    display: none;
+  }
+
+  .report-picky{
+    width: 15%;
+    display: inline-table;
+    vertical-align: top;
+    margin: 0 10px 0 0;
+  }
+
+  .ui.avatar.image {
+    width: 5em;
+  }
