@@ -15,7 +15,7 @@ import { transformVolunteer } from '../transformer';
 import { Volunteer } from "../types";
 import * as dateFns from 'date-fns';
 
-class VolunteersStore {
+export class VolunteersStore {
   @observable offset: number = 0;
   @observable limit: number = 10;
   @observable branch: number = 0;

@@ -4,9 +4,10 @@ import * as React from "react";
 import Notifications from "react-notify-toast";
 import Main from "../../../components/Main";
 import { parseParams } from "../Utils";
+import { VolunteersStore } from "./store";
 
 interface Props {
-    VolunteersStore: any;
+    VolunteersStore: VolunteersStore;
 }
 
 @inject("VolunteersStore")
@@ -27,7 +28,7 @@ export default class Volunteers extends React.Component<Props> {
                             data={this.props.VolunteersStore.listVolunteers}
                             loading={this.props.VolunteersStore.loadList}
                             pages={this.props.VolunteersStore.pages}
-                            defaultPageSize={this.props.VolunteersStore.defaultPageSize}
+                            defaultPageSize={this.props.VolunteersStore.pageSize}
                             tableAction={async (value: any) => {
                                 this.props.VolunteersStore.pageSize = value.pageSize;
                                 await this.props.VolunteersStore.getListVolunteers(parseParams(value));
