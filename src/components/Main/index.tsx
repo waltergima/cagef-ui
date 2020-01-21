@@ -77,6 +77,16 @@ export default class Main extends React.Component<Props> {
                 })
               }
               ]
+            }, {
+              title: "Relatórios",
+              icon: "clipboard check",
+              ref: "report",
+              route: "/relatorios",
+              subItems: [{
+                title: "Voluntários",
+                ref: "reportVolunteers",
+                route: "/relatorios/voluntarios"
+              }]
             }
           ]}
         >
