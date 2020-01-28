@@ -125,8 +125,9 @@ export class UsersStore {
   prepareCreateUser = async (e: any, tabIndex: any) => {
     this.loadForm = true;
     this.form.resetForm();
-    this.resetUpdate();
+    await this.mountCitiesSelect();
     this.actionType = "CREATE";
+    this.resetUpdate();
     this.loadForm = false;
   };
 
@@ -253,6 +254,7 @@ export class UsersStore {
         password: undefined
       });
     } else {
+      this.formTemplate[1].row.fields[0].data = this.cities;
       this.formTemplate[2].row.fields[0].label = 'Senha';
       this.formTemplate[2].row.fields[0].required = true;
       this.form.resetUpdate({
@@ -264,6 +266,8 @@ export class UsersStore {
         password: null
       });
     }
+    this.form.handleChangeMultSelect("city", { value: selectedUser && selectedUser.city ? selectedUser.city.id : null });
+    this.form.handleChangeMultSelect("role", { value: selectedUser ? selectedUser.role : null });
   }
 
   @computed

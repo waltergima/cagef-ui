@@ -4,15 +4,15 @@ import * as React from "react";
 import Notifications from "react-notify-toast";
 import Main from "../../../components/Main";
 import { parseParams } from "../Utils";
-import { UsersStore } from './store';
+import { MusiciansStore } from "./store";
 
 interface Props {
-    UsersStore: UsersStore;
+    MusiciansStore: MusiciansStore;
 }
 
-@inject("UsersStore")
+@inject("MusiciansStore")
 @observer
-export default class Users extends React.Component<Props> {
+export default class Musicians extends React.Component<Props> {
     render() {
         const panes = [
             {
@@ -24,14 +24,14 @@ export default class Users extends React.Component<Props> {
                         <MagaTable
                             filterable={true}
                             serverSide={true}
-                            columns={this.props.UsersStore.columsMasterUsers}
-                            data={this.props.UsersStore.listUsers}
-                            loading={this.props.UsersStore.loadList}
-                            pages={this.props.UsersStore.pages}
-                            defaultPageSize={this.props.UsersStore.pageSize}
+                            columns={this.props.MusiciansStore.columsMasterMusicians}
+                            data={this.props.MusiciansStore.listMusicians}
+                            loading={this.props.MusiciansStore.loadList}
+                            pages={this.props.MusiciansStore.pages}
+                            defaultPageSize={this.props.MusiciansStore.pageSize}
                             tableAction={async (value: any) => {
-                                this.props.UsersStore.pageSize = value.pageSize;
-                                await this.props.UsersStore.getListUsers(parseParams(value));
+                                this.props.MusiciansStore.pageSize = value.pageSize;
+                                await this.props.MusiciansStore.getListMusicians(parseParams(value));
                             }}
                         />
                     )
@@ -43,14 +43,15 @@ export default class Users extends React.Component<Props> {
                     key: 2,
                     content: (
                         <MagaForm
-                            ref={(ref: any) => (this.props.UsersStore.form = ref)}
-                            title="Adicionar usuário"
-                            formTemplate={this.props.UsersStore.formCreateUser}
-                            loading={this.props.UsersStore.loadForm}
-                            onChange={() => { }}
+                            ref={(ref: any) => (this.props.MusiciansStore.form = ref)}
+                            title="Adicionar músico"
+                            refForm="musicianForm"
+                            formTemplate={this.props.MusiciansStore.formCreateMusician}
+                            loading={this.props.MusiciansStore.loadForm}
+                            onChange={this.props.MusiciansStore.formChangeHandler}
                             onSubmit={async (data: any) => {
                                 try {
-                                    this.props.UsersStore.saveUser(data);
+                                    await this.props.MusiciansStore.saveMusician(data);
                                 } catch (error) {
                                     return error;
                                 }
@@ -66,16 +67,16 @@ export default class Users extends React.Component<Props> {
                 <Notifications />
                 <Main>
                     <MagaHeader
-                        title="Usuários"
-                        description="Cadastre usuários com diferentes permissões para acessar o sistema"
+                        title="Músicos"
+                        description="Cadastre músicos da nossa região"
                         icon="wpforms"
                         action={[]}
                     />
                     <Tab
                         panes={panes}
                         renderActiveOnly={false}
-                        activeIndex={this.props.UsersStore.activeTab}
-                        onTabChange={this.props.UsersStore.handleTabChange}
+                        activeIndex={this.props.MusiciansStore.activeTab}
+                        onTabChange={this.props.MusiciansStore.handleTabChange}
                     />
                 </Main>
             </div>

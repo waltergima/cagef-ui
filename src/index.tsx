@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import LoginStore from "./containers/Login/store";
 import CitiesStore from "./containers/Registrations/Cities/store";
 import MinisteriesOrPositionsStore from "./containers/Registrations/MinisteriesOrPositions/store";
+import MusiciansStore from "./containers/Registrations/Musicians/store";
 import PrayingHousesStore from "./containers/Registrations/PrayingHouses/store";
 import UsersStore from "./containers/Registrations/Users/store";
 import VolunteersStore from "./containers/Registrations/Volunteers/store";
@@ -17,6 +18,7 @@ const stores = {
   CitiesStore,
   LoginStore,
   MinisteriesOrPositionsStore,
+  MusiciansStore,
   PrayingHousesStore,
   UsersStore,
   VolunteersStore

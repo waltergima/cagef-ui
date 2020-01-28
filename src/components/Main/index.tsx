@@ -1,7 +1,7 @@
 import { MagaSideBar } from "maga-components";
 import * as React from "react";
 import Notifications from "react-notify-toast";
-import { isAdmin, userData } from '../../config/Utils';
+import { hasRole, userData } from '../../config/Utils';
 import history from "../../routes/history";
 import { SYSTEM } from "./constants";
 interface Props {
@@ -58,32 +58,50 @@ export default class Main extends React.Component<Props> {
                 ref: "volunteers",
                 route: "/cadastros/voluntarios"
               }, {
-                ...(isAdmin() && {
+                ...(hasRole() && {
                   title: "Cidades",
                   ref: "cities",
                   route: "/cadastros/cidades"
                 })
               }, {
-                ...(isAdmin() && {
+                ...(hasRole() && {
                   title: "Ministérios / Cargos",
                   ref: "ministeriesOrPositions",
                   route: "/cadastros/ministerios-cargos"
                 })
               }, {
-                ...(isAdmin() && {
+                ...(hasRole() && {
                   title: "Usuários",
                   ref: "users",
                   route: "/cadastros/usuarios"
                 })
               }
               ]
+            }, {
+              ...(!hasRole("ROLE_USUARIO") && {
+                title: "Gestão Musical",
+                icon: "music",
+                ref: "music",
+                route: "/cadastros/musicos",
+                subItems: [{
+                  title: "Músicos",
+                  ref: "musicians",
+                  route: "/cadastros/musicos"
+                }, {
+                  ...((hasRole("ROLE_ADMIN") || hasRole("ROLE_ADMIN_MUSICA")) && {
+                    title: "Instrumentos",
+                    ref: "instruments",
+                    route: "/cadastros/instrumentos"
+                  })
+                }]
+              })
             }
           ]}
         >
           {children}
         </MagaSideBar>}
         <Notifications />
-      </React.Fragment>
+      </React.Fragment >
     );
   }
 }

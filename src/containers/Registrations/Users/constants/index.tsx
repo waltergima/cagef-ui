@@ -61,12 +61,20 @@ export const ORIGINAL_FORM_TEMPLATE: any[] = [
         defaultData: [],
         data: [{
           key: 1,
-          text: 'USUÁRIO',
+          text: 'USUÁRIO CAGEF',
           value: 'ROLE_USUARIO'
         }, {
           key: 2,
-          text: 'ADMIN',
+          text: 'ADMIN CAGEF',
           value: 'ROLE_ADMIN'
+        }, {
+          key: 3,
+          text: 'USUARIO MUSICA',
+          value: 'ROLE_ADMIN_MUSICA'
+        }, {
+          key: 4,
+          text: 'ADMIN MUSICA',
+          value: 'ROLE_USUARIO_MUSICA'
         }],
         validationErrors: {
           isDefaultRequiredValue: 'A role é obrigatória',

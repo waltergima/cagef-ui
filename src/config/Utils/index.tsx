@@ -17,11 +17,11 @@ export const userData = () => {
     };
 };
 
-export const isAdmin = () => {
+export const hasRole = (role = 'ROLE_ADMIN'): boolean => {
     let userData: any = window.sessionStorage.getItem("auth_userData");
     if (userData) {
         userData = jwt.decode(userData);
-        return (userData.ROLE === 'ROLE_ADMIN');
+        return (userData.ROLE === role);
     }
     return false;
 }
