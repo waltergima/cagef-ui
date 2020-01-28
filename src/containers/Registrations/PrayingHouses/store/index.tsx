@@ -4,7 +4,7 @@ import * as React from "react";
 import { notify } from "react-notify-toast";
 import { colorMessage } from "../../../../config/Const";
 import { showErrorMessage } from "../../../../config/Messages";
-import { isAdmin, userData } from "../../../../config/Utils";
+import { hasRole, userData } from "../../../../config/Utils";
 import { findAll as findAllCities, findById } from '../../Cities/services';
 import { City } from "../../Cities/types";
 import { SelectItem } from "../../types";
@@ -105,7 +105,7 @@ export class PrayingHousesStore {
 
   @action
   mountCitiesSelect = async () => {
-    if (isAdmin()) {
+    if (hasRole()) {
       let response = await findAllCities({ offset: 0, limit: 30, filtered: 'regional=true' });
       this.cities = response.data.content;
       this.unselectedCities = mountSelectValues(this.cities);
@@ -254,8 +254,9 @@ export class PrayingHousesStore {
     this.form.resetUpdate({
       reportCode: selectedPrayingHouse ? selectedPrayingHouse.reportCode : null,
       district: selectedPrayingHouse ? selectedPrayingHouse.district : null,
-      city: selectedPrayingHouse ? selectedPrayingHouse.city.id : null
+      city: selectedPrayingHouse && selectedPrayingHouse.city ? selectedPrayingHouse.city.id : null
     });
+    this.form.handleChangeMultSelect("city", selectedPrayingHouse && selectedPrayingHouse.city ? selectedPrayingHouse.city.id : null);
   }
 
   @computed

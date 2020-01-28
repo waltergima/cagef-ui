@@ -50,6 +50,7 @@ export default class PrayingHouses extends React.Component<Props> {
                             title="Adicionar casa de oração"
                             formTemplate={this.props.PrayingHousesStore.formCreatePrayingHouse}
                             loading={this.props.PrayingHousesStore.loadForm}
+                            onChange={() => { }}
                             onSubmit={async (data: any) => {
                                 try {
                                     this.props.PrayingHousesStore.savePrayingHouse(data);

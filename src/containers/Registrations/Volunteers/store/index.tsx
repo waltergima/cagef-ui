@@ -4,7 +4,7 @@ import * as React from "react";
 import { notify } from "react-notify-toast";
 import { colorMessage } from "../../../../config/Const";
 import { showErrorMessage } from "../../../../config/Messages";
-import { isAdmin, userData } from "../../../../config/Utils";
+import { hasRole, userData } from "../../../../config/Utils";
 import { findAll as getCitiesList, findById as findCityById } from '../../Cities/services';
 import { mountSelectValues } from "../../Cities/transformer";
 import { findAll as getMinistryOrPositionList } from '../../MinisteriesOrPositions/services';
@@ -254,7 +254,7 @@ export class VolunteersStore {
   @action
   mountCitiesSelect = async () => {
     try {
-      if (isAdmin()) {
+      if (hasRole()) {
         let { data: data } = await getCitiesList({ offset: 0, limit: 20, filtered: 'regional=true' });
         this.cities = data.content;
         this.unselectedCities = mountSelectValues(this.cities);
@@ -328,6 +328,18 @@ export class VolunteersStore {
     this.formTemplate[1].row.fields[2].disabled = false;
   }
 
+  @action
+  formChangeHandler = async (input: any, allData: any) => {
+    if (input && input.city) {
+      this.loadForm = true;
+      let { data: data } = await getPrayingHousesList({ offset: 0, limit: 100, filtered: `city.id=${input.city.value}` });
+      this.prayingHouses = this.mountPrayingHousesSelectValues(data.content);
+      this.formTemplate[1].row.fields[2].data = this.prayingHouses;
+      this.formTemplate[1].row.fields[2].disabled = false;
+      this.loadForm = false;
+    }
+  }
+
   private mountMinistryOrPositionSelectValues(obj: any) {
     return obj.map((item: any) => {
       return {
@@ -359,13 +371,13 @@ export class VolunteersStore {
       phoneNumber: volunteerSelected ? volunteerSelected.phoneNumber : null,
       celNumber: volunteerSelected ? volunteerSelected.celNumber : null,
       email: volunteerSelected ? volunteerSelected.email : null,
-      dateOfBirth: volunteerSelected ? dateFns.parseISO(volunteerSelected.dateOfBirth) : null,
+      dateOfBirth: volunteerSelected && volunteerSelected.dateOfBirth ? dateFns.parseISO(volunteerSelected.dateOfBirth) : null,
       naturalness: volunteerSelected && volunteerSelected.naturalness ? volunteerSelected.naturalness.id : null,
-      dateOfBaptism: volunteerSelected ? dateFns.parseISO(volunteerSelected.dateOfBaptism) : null,
+      dateOfBaptism: volunteerSelected && volunteerSelected.dateOfBaptism ? dateFns.parseISO(volunteerSelected.dateOfBaptism) : null,
       cpf: volunteerSelected ? volunteerSelected.cpf : null,
       rg: volunteerSelected ? volunteerSelected.rg : null,
-      maritalStatus: volunteerSelected ? volunteerSelected.maritalStatus : null,
-      ministryApresentationDate: volunteerSelected ? dateFns.parseISO(volunteerSelected.ministryApresentationDate) : null,
+      maritalStatus: volunteerSelected && volunteerSelected.maritalStatus ? volunteerSelected.maritalStatus : null,
+      ministryApresentationDate: volunteerSelected && volunteerSelected.ministryApresentationDate ? dateFns.parseISO(volunteerSelected.ministryApresentationDate) : null,
       promise: volunteerSelected ? volunteerSelected.promise : null,
       prayingHouse: volunteerSelected && volunteerSelected.prayingHouse ? volunteerSelected.prayingHouse.reportCode : null
     });
@@ -375,11 +387,14 @@ export class VolunteersStore {
     this.formTemplate[3].row.fields[1].defaultValue = volunteerSelected ? volunteerSelected.celNumber : null;
     this.formTemplate[4].row.fields[1].defaultValue = volunteerSelected ? volunteerSelected.cpf : null;
     this.formTemplate[2].row.fields[2].defaultValue = volunteerSelected ? volunteerSelected.zipCode : null;
-    this.formTemplate[3].row.fields[3].defaultValue = volunteerSelected ? dateFns.parseISO(volunteerSelected.dateOfBirth) : null;
-    this.formTemplate[4].row.fields[0].defaultValue = volunteerSelected ? dateFns.parseISO(volunteerSelected.dateOfBaptism) : null;
-    this.formTemplate[5].row.fields[0].defaultValue = volunteerSelected ? dateFns.parseISO(volunteerSelected.ministryApresentationDate) : null;
+    this.formTemplate[3].row.fields[3].defaultValue = volunteerSelected && volunteerSelected.dateOfBirth ? dateFns.parseISO(volunteerSelected.dateOfBirth) : null;
+    this.formTemplate[4].row.fields[0].defaultValue = volunteerSelected && volunteerSelected.dateOfBaptism ? dateFns.parseISO(volunteerSelected.dateOfBaptism) : null;
+    this.formTemplate[5].row.fields[0].defaultValue = volunteerSelected && volunteerSelected.ministryApresentationDate ? dateFns.parseISO(volunteerSelected.ministryApresentationDate) : null;
     this.formTemplate[5].row.fields[0].defaultDate = volunteerSelected ? this.mountMinistryOrPositionSelectValues(volunteerSelected.ministryOrPosition) : null;
-
+    this.form.handleChangeMultSelect("city", { value: volunteerSelected && volunteerSelected.city ? volunteerSelected.city.id : null });
+    this.form.handleChangeMultSelect("naturalness", { value: volunteerSelected && volunteerSelected.naturalness ? volunteerSelected.naturalness.id : null });
+    this.form.handleChangeMultSelect("prayingHouse", { value: volunteerSelected && volunteerSelected.prayingHouse ? volunteerSelected.prayingHouse.reportCode : null });
+    this.form.handleChangeMultSelect("promise", { value: volunteerSelected ? volunteerSelected.promise : null });
   }
 
   @computed

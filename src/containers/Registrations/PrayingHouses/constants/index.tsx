@@ -36,7 +36,7 @@ export const ORIGINAL_FORM_TEMPLATE: any[] = [
         },
         {
           label: "Cidades",
-          name: "city.name",
+          name: "city",
           type: "select",
           value: "",
           defaultValue: "",

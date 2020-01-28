@@ -8,6 +8,7 @@ import { SelectItem } from "../../types";
 import { ORIGINAL_FORM_TEMPLATE } from '../constants';
 import { create, findAll, remove, update } from '../services';
 import { City } from "../types";
+import { transform } from '../transformer';
 
 export class CitiesStore {
   @observable offset: number = 0;
@@ -129,7 +130,7 @@ export class CitiesStore {
   async postCity(dataForm: any) {
     this.loadForm = true;
     try {
-      let response = await create(dataForm);
+      let response = await create(transform(dataForm));
       this.tabIndex = 0;
       await this.getListCities({ offset: this.offset, limit: this.limit });
 
@@ -149,8 +150,8 @@ export class CitiesStore {
 
   @action
   prepareCreateCity = async (e: any, tabIndex: any) => {
-    this.loadForm = true;
     this.form.resetForm();
+    this.loadForm = true;
     this.actionType = "CREATE";
     this.resetUpdate();
     this.loadForm = false;
@@ -161,7 +162,7 @@ export class CitiesStore {
     this.loadForm = true;
     try {
       this.tabIndex = 0;
-      let response = await update(dataForm, this.id);
+      let response = await update(transform(dataForm), this.id);
       await this.getListCities({ offset: this.offset, limit: this.limit });
       notify.show(
         `${response.status}  - Cidade atualizada com sucesso`,
@@ -225,6 +226,8 @@ export class CitiesStore {
       state: selectedCity ? selectedCity.state : null,
       regional: selectedCity ? selectedCity.regional : false
     });
+    this.form.handleChangeMultSelect("state", { value: selectedCity && selectedCity.state ? selectedCity.state : null });
+    this.form.handleCheckboxChange("regional", null, { checked: selectedCity ? selectedCity.regional : false });
   }
 
   @computed

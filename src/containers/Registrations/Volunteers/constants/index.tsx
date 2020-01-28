@@ -354,11 +354,14 @@ export const ORIGINAL_FORM_TEMPLATE = [
           {
             key: 2,
             text: 'Não',
-            value: 'S'
+            value: 'N'
           }],
           validationErrors: {
           },
-          multiple: false
+          multiple: false,
+          fluid: true,
+          search: false,
+          selection: true
         }
       ]
     }

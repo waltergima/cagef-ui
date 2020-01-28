@@ -47,6 +47,7 @@ export default class Volunteers extends React.Component<Props> {
                             title="Adicionar voluntário"
                             formTemplate={this.props.VolunteersStore.formCreateVolunteer}
                             loading={this.props.VolunteersStore.loadForm}
+                            onChange={this.props.VolunteersStore.formChangeHandler}
                             onSubmit={async (data: any) => {
                                 try {
                                     this.props.VolunteersStore.saveVolunteer(data);

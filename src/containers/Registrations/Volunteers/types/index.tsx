@@ -18,7 +18,7 @@ export class Volunteer {
     maritalStatus: string;
     ministryApresentationDate: string;
     promise: string;
-    prayingHouse: { reportCode: string };
+    prayingHouse?: { reportCode: string };
     ministryOrPosition: { ids: number[] };
 
     constructor(id: number, name: string, address: string, district: string, city: number, zipCode: string, phoneNumber: string, celNumber: string, email: string, dateOfBirth: Date, naturalness: number, dateOfBaptism: Date, cpf: string, rg: string, maritalStatus: string, ministryApresentationDate: Date, promise: string, reportCode: string, ministryOrPosition: number[]) {
@@ -36,10 +36,10 @@ export class Volunteer {
         this.dateOfBaptism = dateOfBaptism ? dateOfBaptism.toLocaleDateString() : dateOfBaptism;;
         this.cpf = cpf;
         this.rg = rg;
-        this.maritalStatus = maritalStatus;
+        this.maritalStatus = maritalStatus && String(maritalStatus);
         this.ministryApresentationDate = ministryApresentationDate ? ministryApresentationDate.toLocaleDateString() : ministryApresentationDate;
-        this.promise = promise;
-        this.prayingHouse = { reportCode: reportCode };
+        this.promise = promise && String(promise);
+        this.prayingHouse = reportCode ? { reportCode: reportCode } : undefined;
         this.ministryOrPosition = { ids: ministryOrPosition }
     }
 }

@@ -47,7 +47,8 @@ export default class Cities extends React.Component<Props> {
                             title="Adicionar cidade"
                             formTemplate={this.props.CitiesStore.formCreateCity}
                             loading={this.props.CitiesStore.loadForm}
-                            onSubmit={async (data:any) => {
+                            onChange={() => { }}
+                            onSubmit={async (data: any) => {
                                 try {
                                     this.props.CitiesStore.saveCity(data);
                                 } catch (error) {

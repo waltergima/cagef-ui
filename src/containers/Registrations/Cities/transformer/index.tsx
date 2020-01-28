@@ -6,3 +6,8 @@ export const mountSelectValues = (cities: City[]): SelectItem[] => {
         return new SelectItem(item.id, item.name + " - " + item.state, item.id);
     });
 };
+
+export const transform = (dataForm: any) => {
+    dataForm.state = dataForm.state.value;
+    return dataForm;
+}
