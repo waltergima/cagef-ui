@@ -69,11 +69,11 @@ export const ORIGINAL_FORM_TEMPLATE: any[] = [
           value: 'ROLE_ADMIN'
         }, {
           key: 3,
-          text: 'USUARIO MUSICA',
+          text: 'ADMIN MUSICA',
           value: 'ROLE_ADMIN_MUSICA'
         }, {
           key: 4,
-          text: 'ADMIN MUSICA',
+          text: 'USUÁRIO MUSICA',
           value: 'ROLE_USUARIO_MUSICA'
         }],
         validationErrors: {

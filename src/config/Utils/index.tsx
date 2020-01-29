@@ -25,3 +25,11 @@ export const hasRole = (role = 'ROLE_ADMIN'): boolean => {
     }
     return false;
 }
+
+export const isAdmin = (): boolean => {
+    return hasRole('ROLE_ADMIN') || hasRole('ROLE_ADMIN_MUSICA');
+}
+
+export const isCagef = (): boolean => {
+    return hasRole('ROLE_ADMIN') || hasRole('ROLE_USUARIO');
+}

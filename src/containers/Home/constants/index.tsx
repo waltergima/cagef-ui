@@ -1,7 +1,7 @@
-import { hasRole } from "../../../config/Utils";
+import { hasRole, isAdmin, isCagef } from "../../../config/Utils";
 
 const subItens = () => {
-  let subItens = [{
+  let subItens = isCagef() ? [{
     id: 1,
     name: "Casas de Oração",
     route: "/cadastros/casas-oracao",
@@ -11,7 +11,7 @@ const subItens = () => {
     name: "Voluntários",
     route: "/cadastros/voluntarios",
     icon: "place-of-worship"
-  }];
+  }] : [];
 
   if (hasRole()) {
     subItens = subItens.concat([
@@ -25,13 +25,16 @@ const subItens = () => {
         name: "Ministérios / Cargos",
         route: "/cadastros/ministerios-cargos",
         icon: "place-of-worship"
-      }, {
-        id: 5,
-        name: "Usuários",
-        route: "/cadastros/usuarios",
-        icon: "place-of-worship"
       }
     ]);
+  }
+  if (isAdmin()) {
+    subItens.push({
+      id: 5,
+      name: "Usuários",
+      route: "/cadastros/usuarios",
+      icon: "place-of-worship"
+    });
   }
 
   return subItens;
@@ -44,7 +47,7 @@ const musicSubItens = () => {
     route: "/cadastros/musicos"
   }];
 
-  if ((hasRole() || hasRole("ROLE_ADMIN_MUSICA"))) {
+  if (isAdmin()) {
     subItens = subItens.concat([
       {
         id: 2,
@@ -57,18 +60,27 @@ const musicSubItens = () => {
   return subItens;
 };
 
-export const menuItens = [
-  {
-    name: "Cadastros",
-    description: "Cadastre os voluntários de nossa região",
-    icon: "wpforms",
-    visible: true,
-    items: subItens()
-  }, !hasRole("ROLE_USUARIO") && {
-    name: "Gestão Musical",
-    description: "Realize a gestão musical da nossa região",
-    icon: "music",
-    visible: true,
-    items: musicSubItens()
+const getMenuItens = () => {
+  const menuItens = [];
+  if (!hasRole("ROLE_USUARIO_MUSICA")) {
+    menuItens.push({
+      name: "Cadastros",
+      description: "Cadastre os voluntários de nossa região",
+      icon: "wpforms",
+      visible: true,
+      items: subItens()
+    });
   }
-];
+  if (!hasRole("ROLE_USUARIO")) {
+    menuItens.push({
+      name: "Gestão Musical",
+      description: "Realize a gestão musical da nossa região",
+      icon: "music",
+      visible: true,
+      items: musicSubItens()
+    });
+  }
+  return menuItens;
+}
+
+export const menuItens = getMenuItens();

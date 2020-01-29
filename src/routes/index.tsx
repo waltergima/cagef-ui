@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Router } from "react-router-dom";
-import { hasRole } from "../config/Utils";
+import { hasRole, isAdmin } from "../config/Utils";
 import Home from "../containers/Home";
 import Login from "../containers/Login";
 import Cities from "../containers/Registrations/Cities";
@@ -21,7 +21,7 @@ const Routes = () => (
       <Route path="/cadastros/voluntarios" component={Volunteers} />
       ({hasRole() ? <Route path="/cadastros/cidades" component={Cities} /> : ''})
     ({hasRole() ? <Route path="/cadastros/ministerios-cargos" component={MinisteriesOrPositions} /> : ''})
-    ({hasRole() ? <Route path="/cadastros/usuarios" component={Users} /> : ''})
+    ({isAdmin() ? <Route path="/cadastros/usuarios" component={Users} /> : ''})
     <Route path="/relatorios/voluntarios" component={VolunteersReport} />
       {!hasRole("ROLE_USUARIO") && <Route path="/cadastros/musicos" component={Musicians} />}
     </div>

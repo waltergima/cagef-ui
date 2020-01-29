@@ -11,6 +11,7 @@ import { ORIGINAL_FORM_TEMPLATE } from '../constants';
 import { create, findAll, remove, update } from '../services';
 import { transform } from "../transformer";
 import { User } from "../types";
+import { hasRole } from "../../../../config/Utils";
 
 export class UsersStore {
   @observable offset: number = 0;
@@ -108,6 +109,9 @@ export class UsersStore {
   async getListUsers(params: any) {
     this.offset = params.offset;
     this.limit = params.limit;
+    if (hasRole("ROLE_ADMIN_MUSICA")) {
+      params.filtered = (params.filtered || '').concat("role=MUSICA");
+    }
     try {
       this.loadList = true;
       let { data: response } = await findAll(params);
@@ -143,7 +147,7 @@ export class UsersStore {
   async postUser(dataForm: any) {
     this.loadForm = true;
     try {
-      let response = await create(dataForm);
+      let response = await create(transform(dataForm));
       this.tabIndex = 0;
       await this.getListUsers({ offset: this.offset, limit: this.limit });
 
@@ -241,6 +245,10 @@ export class UsersStore {
   };
 
   private resetUpdate(selectedUser?: User) {
+    if (hasRole("ROLE_ADMIN_MUSICA")) {
+      this.formTemplate[1].row.fields[1].data = [this.formTemplate[1].row.fields[1].data[2], this.formTemplate[1].row.fields[1].data[3]];
+    }
+
     if (selectedUser) {
       this.formTemplate[1].row.fields[0].data = this.cities;
       this.formTemplate[2].row.fields[0].label = 'Senha (Deixar em branco para manter a senha atual)';
