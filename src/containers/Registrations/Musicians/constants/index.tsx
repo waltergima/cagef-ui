@@ -186,7 +186,69 @@ export const ORIGINAL_FORM_TEMPLATE = [
             minLength: "Deve possuir no minimo 10 caracteres",
             maxLength: "Deve possuir no máximo 10 caracteres",
           },
-          width: 2
+          width: 3
+        },
+        {
+          label: "Ensaio",
+          name: "rehearsalDate",
+          type: "date",
+          dateFormat: 'dd/MM/yyyy',
+          placeholder: "",
+          maxLength: 10,
+          required: false,
+          timeCaption: "time",
+          validations: {},
+          validationErrors: {
+            minLength: "Deve possuir no minimo 10 caracteres",
+            maxLength: "Deve possuir no máximo 10 caracteres",
+          },
+          width: 3
+        },
+        {
+          label: "Exame RJM",
+          name: "rjmExamDate",
+          type: "date",
+          dateFormat: 'dd/MM/yyyy',
+          placeholder: "",
+          maxLength: 10,
+          required: false,
+          timeCaption: "time",
+          validations: {},
+          validationErrors: {
+            minLength: "Deve possuir no minimo 10 caracteres",
+            maxLength: "Deve possuir no máximo 10 caracteres",
+          },
+          width: 3
+        },
+        {
+          label: "Culto oficial",
+          name: "oficialCultExamDate",
+          type: "date",
+          dateFormat: 'dd/MM/yyyy',
+          placeholder: "",
+          maxLength: 10,
+          required: false,
+          timeCaption: "time",
+          validations: {},
+          validationErrors: {
+            minLength: "Deve possuir no minimo 10 caracteres",
+            maxLength: "Deve possuir no máximo 10 caracteres",
+          },
+          width: 3
+        },
+      ]
+    }
+  },
+  {
+    row: {
+      fields: [
+        {
+          label: "Observação",
+          name: "observation",
+          type: "textArea",
+          width: 16,
+          defaultData: "",
+          data: []
         }
       ]
     }

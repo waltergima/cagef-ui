@@ -11,7 +11,6 @@ import { findAll as getMinistryOrPositionList } from '../../MinisteriesOrPositio
 import { findAll as getPrayingHousesList } from '../../PrayingHouses/services';
 import { ORIGINAL_FORM_TEMPLATE } from "../constants";
 import { findAll, create, remove, update, findAllInstruments } from '../services';
-// import { findAll } from '../../Volunteers/services';
 import { transformMusician } from '../transformer';
 import { Musician, Instrument } from "../types";
 import * as dateFns from 'date-fns';
@@ -333,7 +332,7 @@ export class MusiciansStore {
 
   @action
   async mountInstrumentsSelect(musicianSelected?: Musician) {
-    let { data: response } = await findAllInstruments({ offset: 0, limit: 100 });
+    let { data: response } = await findAllInstruments({ offset: 0, limit: 100, filtered: 'orderBy=description' });
     this.formTemplate[3].row.fields[0].data = this.mountInstrumentSelectValues(response.content);
     if (musicianSelected) {
 
@@ -388,7 +387,6 @@ export class MusiciansStore {
   };
 
   private resetUpdate(musicianSelected?: any) {
-    console.log('musicianSelected.city: ' + musicianSelected!.city.id);
     this.form.resetUpdate({
       id: this.id,
       name: musicianSelected ? musicianSelected.name : null,
@@ -399,7 +397,11 @@ export class MusiciansStore {
       dateOfBirth: musicianSelected && musicianSelected.dateOfBirth ? dateFns.parseISO(musicianSelected.dateOfBirth) : null,
       prayingHouse: musicianSelected && musicianSelected.prayingHouse ? musicianSelected.prayingHouse.reportCode : null,
       instrument: musicianSelected && musicianSelected.instrument ? musicianSelected.instrument.id : null,
-      oficializationDate: musicianSelected && musicianSelected.oficializationDate ? dateFns.parseISO(musicianSelected.oficializationDate) : null
+      oficializationDate: musicianSelected && musicianSelected.oficializationDate ? dateFns.parseISO(musicianSelected.oficializationDate) : null,
+      rehearsalDate: musicianSelected && musicianSelected.rehearsalDate ? dateFns.parseISO(musicianSelected.rehearsalDate) : null,
+      rjmExamDate: musicianSelected && musicianSelected.rjmExamDate ? dateFns.parseISO(musicianSelected.rjmExamDate) : null,
+      oficialCultExamDate: musicianSelected && musicianSelected.oficialCultExamDate ? dateFns.parseISO(musicianSelected.oficialCultExamDate) : null,
+      observation: musicianSelected ? musicianSelected.observation : null
     });
 
     // this.formTemplate[1].row.fields[1].defaultValue = musicianSelected && musicianSelected.city ? { "key": musicianSelected.city.id, "text": musicianSelected.city.name, "value": musicianSelected.city.id } : null;
@@ -407,6 +409,9 @@ export class MusiciansStore {
     this.formTemplate[2].row.fields[1].defaultValue = musicianSelected ? musicianSelected.celNumber : null;
     this.formTemplate[2].row.fields[3].defaultValue = musicianSelected && musicianSelected.dateOfBirth ? dateFns.parseISO(musicianSelected.dateOfBirth) : null;
     this.formTemplate[3].row.fields[1].defaultValue = musicianSelected && musicianSelected.oficializationDate ? dateFns.parseISO(musicianSelected.oficializationDate) : null;
+    this.formTemplate[3].row.fields[2].defaultValue = musicianSelected && musicianSelected.rehearsalDate ? dateFns.parseISO(musicianSelected.rehearsalDate) : null;
+    this.formTemplate[3].row.fields[3].defaultValue = musicianSelected && musicianSelected.rjmExamDate ? dateFns.parseISO(musicianSelected.rjmExamDate) : null;
+    this.formTemplate[3].row.fields[4].defaultValue = musicianSelected && musicianSelected.oficialCultExamDate ? dateFns.parseISO(musicianSelected.oficialCultExamDate) : null;
 
     this.form.handleChangeMultSelect("city", { value: musicianSelected && musicianSelected.city ? musicianSelected.city.id : null });
 
