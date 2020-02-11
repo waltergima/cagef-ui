@@ -48,6 +48,7 @@ export default class Cities extends React.Component<Props> {
                             formTemplate={this.props.CitiesStore.formCreateCity}
                             loading={this.props.CitiesStore.loadForm}
                             onChange={() => { }}
+                            accordionStatusOpened={() => { }}
                             onSubmit={async (data: any) => {
                                 try {
                                     this.props.CitiesStore.saveCity(data);

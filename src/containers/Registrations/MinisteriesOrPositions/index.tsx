@@ -48,6 +48,7 @@ export default class MinisteriesOrPositions extends React.Component<Props> {
                             formTemplate={this.props.MinisteriesOrPositionsStore.formCreateMinistryOrPosition}
                             loading={this.props.MinisteriesOrPositionsStore.loadForm}
                             onChange={() => { }}
+                            accordionStatusOpened={() => { }}
                             onSubmit={async (data: any) => {
                                 try {
                                     this.props.MinisteriesOrPositionsStore.saveMinistryOrPosition(data);

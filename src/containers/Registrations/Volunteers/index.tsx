@@ -48,6 +48,7 @@ export default class Volunteers extends React.Component<Props> {
                             formTemplate={this.props.VolunteersStore.formCreateVolunteer}
                             loading={this.props.VolunteersStore.loadForm}
                             onChange={this.props.VolunteersStore.formChangeHandler}
+                            accordionStatusOpened={() => { }}
                             onSubmit={async (data: any) => {
                                 try {
                                     this.props.VolunteersStore.saveVolunteer(data);

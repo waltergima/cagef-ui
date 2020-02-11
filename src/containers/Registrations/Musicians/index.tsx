@@ -49,6 +49,7 @@ export default class Musicians extends React.Component<Props> {
                             formTemplate={this.props.MusiciansStore.formCreateMusician}
                             loading={this.props.MusiciansStore.loadForm}
                             onChange={this.props.MusiciansStore.formChangeHandler}
+                            accordionStatusOpened={() => { }}
                             onSubmit={async (data: any) => {
                                 try {
                                     await this.props.MusiciansStore.saveMusician(data);

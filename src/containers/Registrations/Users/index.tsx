@@ -48,6 +48,7 @@ export default class Users extends React.Component<Props> {
                             formTemplate={this.props.UsersStore.formCreateUser}
                             loading={this.props.UsersStore.loadForm}
                             onChange={() => { }}
+                            accordionStatusOpened={() => { }}
                             onSubmit={async (data: any) => {
                                 try {
                                     this.props.UsersStore.saveUser(data);
