@@ -1,10 +1,11 @@
-import { Container, Divider, Grid, Header, MagaForm, Segment } from "maga-components";
+import { Container, Divider, Grid, Header, Image, MagaForm, Segment } from "maga-components";
 import { inject, observer } from "mobx-react";
 import * as React from "react";
 import Notifications from "react-notify-toast";
 import { LoginStore } from './store';
 import { notify } from "react-notify-toast";
 import { colorMessage } from "../../config/Const";
+import LogoSystem from "../../assets/images/Logoccb.png";
 
 interface Props {
     LoginStore: LoginStore;
@@ -30,28 +31,34 @@ export default class Login extends React.Component<Props> {
             <div className="login">
                 <Container text style={{ marginTop: "12em" }}>
                     <Segment inverted raised color="blue" className="login-block">
-                        <Grid columns={1} divided>
+                        <Grid columns={1} divided textAlign={"center"}>
                             <Grid.Column className="login-block login-block-form-field">
                                 <Notifications />
                                 <Grid.Row>
                                     <Divider hidden />
-                                    <Header as="h2" color="blue">
+                                    <Image avatar={false} src={LogoSystem} size="medium" centered />
+                                    <Header as="h2" color="blue" >
                                         CAGEF - Cadastro Geral de Funções
-                                </Header>
+                                    </Header>
                                     <Divider hidden />
-                                    <MagaForm
-                                        ref={(ref: any) => (this.props.LoginStore.form = ref)}
-                                        title="Login"
-                                        formTemplate={this.props.LoginStore.formLogin}
-                                        loading={this.props.LoginStore.loadForm}
-                                        onSubmit={async (data: any) => {
-                                            try {
-                                                this.props.LoginStore.login(data);
-                                            } catch (error) {
-                                                return error;
-                                            }
-                                        }}
-                                    />
+                                    <Grid.Row>
+                                        <MagaForm
+                                            accordion={false}
+                                            ref={(ref: any) => (this.props.LoginStore.form = ref)}
+                                            title="Login"
+                                            formTemplate={this.props.LoginStore.formLogin}
+                                            loading={this.props.LoginStore.loadForm}
+                                            onChange={() => { }}
+                                            accordionStatusOpened={() => { }}
+                                            onSubmit={async (data: any) => {
+                                                try {
+                                                    this.props.LoginStore.login(data);
+                                                } catch (error) {
+                                                    return error;
+                                                }
+                                            }}
+                                        />
+                                    </Grid.Row>
                                 </Grid.Row>
                             </Grid.Column>
                         </Grid>

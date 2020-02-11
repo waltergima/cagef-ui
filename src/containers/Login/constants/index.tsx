@@ -17,7 +17,7 @@ export const ORIGINAL_FORM_TEMPLATE: any[] = [
             minLength: "Deve possuir no minimo 3 caracteres",
             maxLength: "Deve possuir no máximo 255 caracteres",
           },
-          width: 8
+          width: 10
         }]
     },
   },
@@ -38,7 +38,7 @@ export const ORIGINAL_FORM_TEMPLATE: any[] = [
           minLength: "Deve possuir no minimo 3 caracteres",
           maxLength: "Deve possuir no máximo 255 caracteres",
         },
-        width: 8
+        width: 10
       }]
     }
   },
