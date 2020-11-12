@@ -30,6 +30,7 @@ export class PrayingHousesStore {
   @observable unselectedCities: SelectItem[] = [];
   @observable cities: City[] = [];
   @observable reportCode: string = ""
+  @observable isModalDelete = false;
   @observable formTemplate: any = ORIGINAL_FORM_TEMPLATE;
   @observable
   columsMaster: any[] = [
@@ -115,9 +116,9 @@ export class PrayingHousesStore {
       this.cities = [data];
       this.unselectedCities = mountSelectValues(this.cities);
       this.formTemplate[0].row.fields[2].disabled = true;
-      this.form.resetUpdate({
+      /* this.form.resetUpdate({
         city: userData().city
-      });
+      }); */
     }
     this.formTemplate[0].row.fields[2].data = this.unselectedCities;
   };
@@ -144,8 +145,8 @@ export class PrayingHousesStore {
     this.form.resetForm();
     this.loadForm = true;
     this.actionType = "CREATE";
-    this.resetUpdate();
     await this.mountCitiesSelect();
+    this.resetUpdate();
     this.loadForm = false;
   };
 
@@ -187,8 +188,8 @@ export class PrayingHousesStore {
     selectedPrayingHouse: PrayingHouse
   ) => {
     this.loadForm = true;
-    this.form.resetForm();
     await this.mountCitiesSelect();
+    this.form.resetForm();
     this.actionType = "EDIT";
     this.tabIndex = activeIndex;
     this.reportCode = selectedPrayingHouse.reportCode
@@ -223,14 +224,16 @@ export class PrayingHousesStore {
 
   @action
   async prepareRemovePrayingHouse(e: any, selectedPrayingHouse: PrayingHouse) {
-    await this.removePrayingHouse(selectedPrayingHouse);
+    this.reportCode = selectedPrayingHouse.reportCode;
+    this.isModalDelete = true;
   }
 
   @action
-  async removePrayingHouse(selectedPrayingHouse: PrayingHouse) {
+  async removePrayingHouse() {
+    this.isModalDelete = false;
     this.loadList = true;
     try {
-      let response = await remove(selectedPrayingHouse.reportCode);
+      let response = await remove(this.reportCode);
 
       await this.getListPrayingHouses({
         offset: this.offset,
@@ -254,9 +257,9 @@ export class PrayingHousesStore {
     this.form.resetUpdate({
       reportCode: selectedPrayingHouse ? selectedPrayingHouse.reportCode : null,
       district: selectedPrayingHouse ? selectedPrayingHouse.district : null,
-      city: selectedPrayingHouse && selectedPrayingHouse.city ? selectedPrayingHouse.city.id : null
+      city: selectedPrayingHouse && selectedPrayingHouse.city ? selectedPrayingHouse.city.id : this.cities[0].id
     });
-    this.form.handleChangeMultSelect("city", selectedPrayingHouse && selectedPrayingHouse.city ? selectedPrayingHouse.city.id : null);
+    this.form.handleChangeMultSelect("city", selectedPrayingHouse && selectedPrayingHouse.city ? selectedPrayingHouse.city.id : this.cities[0].id);
   }
 
   @computed

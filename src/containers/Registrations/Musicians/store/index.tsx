@@ -4,7 +4,7 @@ import * as React from "react";
 import { notify } from "react-notify-toast";
 import { colorMessage } from "../../../../config/Const";
 import { showErrorMessage } from "../../../../config/Messages";
-import { hasRole, userData } from "../../../../config/Utils";
+import { isAdmin, userData } from "../../../../config/Utils";
 import { findAll as getCitiesList, findById as findCityById } from '../../Cities/services';
 import { mountSelectValues } from "../../Cities/transformer";
 import { findAll as getMinistryOrPositionList } from '../../MinisteriesOrPositions/services';
@@ -34,6 +34,7 @@ export class MusiciansStore {
   @observable ministryOrPositions: any[] = [];
   @observable prayingHouses: any[] = [];
   @observable id: number = 0;
+  @observable isModalDelete = false;
   @observable formTemplate: any[] = ORIGINAL_FORM_TEMPLATE;
 
   @observable
@@ -101,7 +102,11 @@ export class MusiciansStore {
       Cell: (row: any) => {
         return row.original.instrument ? <span>{row.original.instrument.description}</span> : null
       }
-    }
+    },{
+      Header: "Casa de Oração",
+      accessor: "prayingHouse.district",
+      Cell: (row: any) => { return row.original.prayingHouse ? (<span> {row.original.prayingHouse.district}</span >) : '' }
+    },
   ];
 
   @action
@@ -235,14 +240,16 @@ export class MusiciansStore {
 
   @action
   async prepareRemoveMusician(e: any, musicianSelected: Musician) {
-    await this.removeMusician(musicianSelected);
+    this.id = musicianSelected.id;
+    this.isModalDelete = true;
   }
 
   @action
-  async removeMusician(musicianSelected: Musician) {
+  async removeMusician() {
+    this.isModalDelete = false;
     this.loadList = true;
     try {
-      let response = await remove(musicianSelected.id);
+      let response = await remove(this.id);
 
       await this.getListMusicians({
         offset: this.offset,
@@ -265,7 +272,7 @@ export class MusiciansStore {
   @action
   mountCitiesSelect = async () => {
     try {
-      if (hasRole()) {
+      if (isAdmin()) {
         let { data: data } = await getCitiesList({ offset: 0, limit: 20, filtered: 'regional=true' });
         this.cities = data.content;
         this.unselectedCities = mountSelectValues(this.cities);
@@ -324,7 +331,9 @@ export class MusiciansStore {
     this.formTemplate[1].row.fields[1].onChange = this.handlePrayingHousesSelectChange;
 
     if (musicianSelected && musicianSelected.city && musicianSelected.city.id) {
-      await this.handlePrayingHousesSelectChange(undefined, { value: musicianSelected.city.id })
+      await this.handlePrayingHousesSelectChange(undefined, { value: musicianSelected.city.id });
+    } else {
+      await this.handlePrayingHousesSelectChange(undefined, { value: this.cities[0].id });
     }
 
     this.formTemplate[1].row.fields[2].data = this.prayingHouses;
@@ -390,7 +399,7 @@ export class MusiciansStore {
     this.form.resetUpdate({
       id: this.id,
       name: musicianSelected ? musicianSelected.name : null,
-      city: musicianSelected && musicianSelected.city ? musicianSelected.city.id : null,
+      city: musicianSelected && musicianSelected.city ? musicianSelected.city.id : this.cities[0].id,
       phoneNumber: musicianSelected ? musicianSelected.phoneNumber : null,
       celNumber: musicianSelected ? musicianSelected.celNumber : null,
       email: musicianSelected ? musicianSelected.email : null,
@@ -413,7 +422,7 @@ export class MusiciansStore {
     this.formTemplate[3].row.fields[3].defaultValue = musicianSelected && musicianSelected.rjmExamDate ? dateFns.parseISO(musicianSelected.rjmExamDate) : null;
     this.formTemplate[3].row.fields[4].defaultValue = musicianSelected && musicianSelected.oficialCultExamDate ? dateFns.parseISO(musicianSelected.oficialCultExamDate) : null;
 
-    this.form.handleChangeMultSelect("city", { value: musicianSelected && musicianSelected.city ? musicianSelected.city.id : null });
+    this.form.handleChangeMultSelect("city", { value: musicianSelected && musicianSelected.city ? musicianSelected.city.id : this.cities[0].id });
 
     this.form.handleChangeMultSelect("prayingHouse", { value: musicianSelected && musicianSelected.prayingHouse ? musicianSelected.prayingHouse.reportCode : null });
 

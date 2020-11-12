@@ -1,4 +1,4 @@
-import { MagaForm, MagaHeader, MagaTable, Tab } from "maga-components";
+import { Button, MagaForm, MagaHeader, MagaTable, Modal, Tab } from "maga-components";
 import { inject, observer } from "mobx-react";
 import * as React from "react";
 import Notifications from "react-notify-toast";
@@ -82,6 +82,34 @@ export default class PrayingHouses extends React.Component<Props> {
                         onTabChange={this.props.PrayingHousesStore.handleTabChange}
                     />
                 </Main>
+                <Modal open={this.props.PrayingHousesStore.isModalDelete} size="mini">
+                  <>
+                    <Modal.Header>Alerta</Modal.Header>
+                    <Modal.Content>
+                      <p>
+                        Tem certeza que deseja remover a casa de oração?
+                        <br />
+                        <b>Esta ação não poderá ser desfeita</b>
+                      </p>
+
+                    </Modal.Content>
+                  </>
+                  <Modal.Actions>
+                    <>
+                      <Button onClick={() => this.props.PrayingHousesStore.isModalDelete = false}>
+                        Cancelar
+                      </Button>
+                              <Button
+                                color="red"
+                                onClick={async () =>
+                                  await this.props.PrayingHousesStore.removePrayingHouse()
+                                }
+                              >
+                                Continuar
+                      </Button>
+                    </>
+                  </Modal.Actions>
+                </Modal>
             </div>
         );
     }

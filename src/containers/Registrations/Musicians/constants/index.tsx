@@ -147,7 +147,7 @@ export const ORIGINAL_FORM_TEMPLATE = [
             minLength: "Deve possuir no minimo 10 caracteres",
             maxLength: "Deve possuir no máximo 10 caracteres",
           },
-          width: 2
+          width: 3
         }
       ]
     }

@@ -26,6 +26,7 @@ export class CitiesStore {
   @observable unselectedCities: SelectItem[] = [];
   @observable cities: City[] = [];
   @observable id: number = -1;
+  @observable isModalDelete = false;
   @observable formTemplate: any = ORIGINAL_FORM_TEMPLATE;
   @observable
   columsMaster: any[] = [
@@ -98,7 +99,8 @@ export class CitiesStore {
 
   @action
   prepareRemoveCity(e: any, selectedCity: City) {
-    this.removeCity(selectedCity);
+    this.id = selectedCity.id;
+    this.isModalDelete = true;
   }
 
   @action
@@ -179,10 +181,11 @@ export class CitiesStore {
   }
 
   @action
-  async removeCity(selectedCity: City) {
+  async removeCity() {
+    this.isModalDelete = false;
     this.loadList = true;
     try {
-      let response = await remove(selectedCity.id);
+      let response = await remove(this.id);
 
       await this.getListCities({
         offset: this.offset,

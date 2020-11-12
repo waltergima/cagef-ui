@@ -25,6 +25,7 @@ export class MinisteriesOrPositionsStore {
   @observable unselectedMinisteriesOrPositions: SelectItem[] = [];
   @observable ministeriesOrPositions: MinistryOrPosition[] = [];
   @observable id: number = -1;
+  @observable isModalDelete = false;
   @observable formTemplate: any = ORIGINAL_FORM_TEMPLATE;
   @observable
   columsMaster: any[] = [
@@ -179,14 +180,16 @@ export class MinisteriesOrPositionsStore {
 
   @action
   async prepareRemoveMinistryOrPosition(e: any, selectedMinistryOrPosition: MinistryOrPosition) {
-    await this.removeMinistryOrPosition(selectedMinistryOrPosition);
+    this.id = selectedMinistryOrPosition.id;
+    this.isModalDelete = true;
   }
 
   @action
-  async removeMinistryOrPosition(selectedMinistryOrPosition: MinistryOrPosition) {
+  async removeMinistryOrPosition() {
+    this.isModalDelete = false;
     this.loadList = true;
     try {
-      let response = await remove(selectedMinistryOrPosition.id);
+      let response = await remove(this.id);
 
       await this.getListMinisteriesOrPositions({
         offset: this.offset,

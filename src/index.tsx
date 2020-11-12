@@ -10,6 +10,7 @@ import MusiciansStore from "./containers/Registrations/Musicians/store";
 import PrayingHousesStore from "./containers/Registrations/PrayingHouses/store";
 import UsersStore from "./containers/Registrations/Users/store";
 import VolunteersStore from "./containers/Registrations/Volunteers/store";
+import VolunteersReportStore from "./containers/Reports/Volunteers/store";
 import "./index.css";
 import Routes from "./routes";
 import * as serviceWorker from "./serviceWorker";
@@ -23,7 +24,8 @@ const stores = {
   MusiciansStore,
   PrayingHousesStore,
   UsersStore,
-  VolunteersStore
+  VolunteersStore,
+  VolunteersReportStore,
 };
 
 ReactDOM.render(

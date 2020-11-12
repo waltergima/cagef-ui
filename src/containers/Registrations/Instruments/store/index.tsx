@@ -26,6 +26,7 @@ export class InstrumentsStore {
   @observable unselectedInstruments: SelectItem[] = [];
   @observable instruments: Instrument[] = [];
   @observable id: number = 0;
+  @observable isModalDelete = false;
   @observable formTemplate: any = ORIGINAL_FORM_TEMPLATE;
   @observable
   columsMaster: any[] = [
@@ -93,7 +94,8 @@ export class InstrumentsStore {
 
   @action
   prepareRemoveInstrument(e: any, selectedInstrument: Instrument) {
-    this.removeInstrument(selectedInstrument);
+    this.id = selectedInstrument.id;
+    this.isModalDelete = true;
   }
 
   @action
@@ -175,10 +177,11 @@ export class InstrumentsStore {
   }
 
   @action
-  async removeInstrument(selectedInstrument: Instrument) {
+  async removeInstrument() {
+    this.isModalDelete = false;
     this.loadList = true;
     try {
-      let response = await remove(selectedInstrument.id);
+      let response = await remove(this.id);
 
       await this.getListInstruments({
         offset: this.offset,

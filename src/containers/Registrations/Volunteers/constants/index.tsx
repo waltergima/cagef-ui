@@ -128,13 +128,14 @@ export const ORIGINAL_FORM_TEMPLATE = [
           width: 4
         },
         {
+          id: 'naturalness',
           label: "Naturalidade",
           name: "naturalness",
           type: "dropdown",
           search: true,
           multiple: false,
           defaultValue: "",
-          placeholder: "Selecione uma cidade",
+          placeholder: "Digite uma cidade para pesquisa",
           required: false,
           width: 8,
           defaultData: [],
@@ -217,7 +218,7 @@ export const ORIGINAL_FORM_TEMPLATE = [
             minLength: "Deve possuir no minimo 10 caracteres",
             maxLength: "Deve possuir no máximo 10 caracteres",
           },
-          width: -4
+          width: 3
         }
       ]
     }

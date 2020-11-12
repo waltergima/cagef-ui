@@ -24,37 +24,34 @@ export default class Main extends React.Component<Props> {
         icon: "home",
         route: "/"
       }];
-    if (!hasRole("ROLE_USUARIO_MUSICA")) {
+    if (isCagef()) {
       menu.push({
         title: "Cadastros",
         icon: "wpforms",
         ref: "registration",
         route: "/cadastros",
         subItems: [{
-          ...(isCagef() && {
             title: "Casas de Oração",
             ref: "prayingHouses",
             route: "/cadastros/casas-oracao"
-          })
-        }, {
-          ...(isCagef() && {
+          },{
             title: "Voluntários",
             ref: "volunteers",
             route: "/cadastros/voluntarios"
-          })
-        }, {
+        },{
           ...(hasRole() && {
-            title: "Cidades",
-            ref: "cities",
-            route: "/cadastros/cidades"
+              title: "Ministérios / Cargos",
+              ref: "ministeriesOrPositions",
+              route: "/cadastros/ministerios-cargos"
           })
-        }, {
-          ...(hasRole() && {
-            title: "Ministérios / Cargos",
-            ref: "ministeriesOrPositions",
-            route: "/cadastros/ministerios-cargos"
-          })
-        }, {
+          }, {
+            ...(hasRole() && {
+              title: "Cidades ",
+              ref: "cities",
+              route: "/cadastros/cidades"
+            })
+      },
+        {
           ...(isAdmin() && {
             title: "Usuários",
             ref: "users",
@@ -62,6 +59,16 @@ export default class Main extends React.Component<Props> {
           })
         }
         ]
+      }, {
+        title: "Relatorios",
+        icon: "line chart",
+        ref: "chart",
+        route: "/relatorios",
+        subItems: [{
+            title: "Voluntários",
+            ref: "ministryOrPositionReport",
+            route: "/relatorios/voluntarios"
+          }]
       });
     }
 
@@ -107,7 +114,7 @@ export default class Main extends React.Component<Props> {
           menu={menu}
         >
           {children}
-        </MagaSideBar>}
+        </MagaSideBar>
         <Notifications />
       </React.Fragment >
     );

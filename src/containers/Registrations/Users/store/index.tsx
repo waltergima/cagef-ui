@@ -30,6 +30,7 @@ export class UsersStore {
   @observable unselectedUsers: SelectItem[] = [];
   @observable users: User[] = [];
   @observable id: number = -1;
+  @observable isModalDelete = false;
   @observable formTemplate: any = ORIGINAL_FORM_TEMPLATE;
   @observable
   columsMaster: any[] = [
@@ -206,14 +207,16 @@ export class UsersStore {
 
   @action
   async prepareRemoveUser(e: any, selectedUser: User) {
-    await this.removeUser(selectedUser);
+    this.id = selectedUser.id;
+    this.isModalDelete = true;
   }
 
   @action
-  async removeUser(selectedUser: User) {
+  async removeUser() {
+    this.isModalDelete = false;
     this.loadList = true;
     try {
-      let response = await remove(selectedUser.id);
+      let response = await remove(this.id);
 
       await this.getListUsers({
         offset: this.offset,

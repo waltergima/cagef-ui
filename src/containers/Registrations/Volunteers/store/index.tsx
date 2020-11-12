@@ -34,6 +34,7 @@ export class VolunteersStore {
   @observable ministryOrPositions: any[] = [];
   @observable prayingHouses: any[] = [];
   @observable id: number = 0;
+  @observable isModalDelete = false;
   @observable formTemplate: any[] = ORIGINAL_FORM_TEMPLATE;
 
   @observable
@@ -95,7 +96,12 @@ export class VolunteersStore {
       Cell: (row: any) => {
         return row.original.ministryOrPosition.map((m: any) => <span>{m.description}<br></br></span>)
       }
-    }
+    },
+    {
+      Header: "Casa de Oração",
+      accessor: "prayingHouse.district",
+      Cell: (row: any) => { return row.original.prayingHouse ? (<span> {row.original.prayingHouse.district}</span >) : '' }
+    },
   ];
 
   @action
@@ -155,29 +161,6 @@ export class VolunteersStore {
   };
 
   @action
-  async postVolunteer(dataForm: any) {
-    this.loadForm = true;
-    let volunteer = transformVolunteer(dataForm);
-    try {
-      let response = await create(volunteer);
-      this.tabIndex = 0;
-      this.getListVolunteers({ offset: this.offset, limit: this.limit });
-
-      notify.show(
-        `${response.status}  - Voluntário criado com sucesso`,
-        "custom",
-        2000,
-        colorMessage.success
-      );
-    } catch (err) {
-      console.log(err);
-      showErrorMessage(err.response);
-    } finally {
-      this.loadForm = false;
-    }
-  }
-
-  @action
   prepareEditVolunteer = async (
     e: any,
     activeIndex: number,
@@ -199,6 +182,29 @@ export class VolunteersStore {
     this.resetUpdate(volunteerSelected);
     this.loadForm = false;
   };
+
+  @action
+  async postVolunteer(dataForm: any) {
+    this.loadForm = true;
+    let volunteer = transformVolunteer(dataForm);
+    try {
+      let response = await create(volunteer);
+      this.tabIndex = 0;
+      this.getListVolunteers({ offset: this.offset, limit: this.limit });
+
+      notify.show(
+        `${response.status}  - Voluntário criado com sucesso`,
+        "custom",
+        2000,
+        colorMessage.success
+      );
+    } catch (err) {
+      console.log(err);
+      showErrorMessage(err.response);
+    } finally {
+      this.loadForm = false;
+    }
+  }
 
   @action
   async updateVolunteer(dataForm: any) {
@@ -224,14 +230,16 @@ export class VolunteersStore {
 
   @action
   async prepareRemoveVolunteer(e: any, volunteerSelected: Volunteer) {
-    await this.removeVolunteer(volunteerSelected);
+    this.id = volunteerSelected.id;
+    this.isModalDelete = true;
   }
 
   @action
-  async removeVolunteer(volunteerSelected: Volunteer) {
+  async removeVolunteer() {
+    this.isModalDelete = false;
     this.loadList = true;
     try {
-      let response = await remove(volunteerSelected.id);
+      let response = await remove(this.id);
 
       await this.getListVolunteers({
         offset: this.offset,
@@ -314,7 +322,9 @@ export class VolunteersStore {
     this.formTemplate[1].row.fields[1].onChange = this.handlePrayingHousesSelectChange;
 
     if (volunteerSelected && volunteerSelected.city && volunteerSelected.city.id) {
-      await this.handlePrayingHousesSelectChange(undefined, { value: volunteerSelected.city.id })
+      await this.handlePrayingHousesSelectChange(undefined, { value: volunteerSelected.city.id });
+    } else {
+      await this.handlePrayingHousesSelectChange(undefined, { value: this.cities[0].id });
     }
 
     this.formTemplate[1].row.fields[2].data = this.prayingHouses;
@@ -322,15 +332,17 @@ export class VolunteersStore {
 
   @action
   handlePrayingHousesSelectChange = async (e: any, itemInput: any) => {
-    let { data: data } = await getPrayingHousesList({ offset: 0, limit: 100, filtered: `city.id=${itemInput.value}` });
-    this.prayingHouses = this.mountPrayingHousesSelectValues(data.content);
-    this.formTemplate[1].row.fields[2].data = this.prayingHouses;
-    this.formTemplate[1].row.fields[2].disabled = false;
+    if(itemInput && itemInput.value) {
+      let { data: data } = await getPrayingHousesList({ offset: 0, limit: 100, filtered: `city.id=${itemInput.value}` });
+      this.prayingHouses = this.mountPrayingHousesSelectValues(data.content);
+      this.formTemplate[1].row.fields[2].data = this.prayingHouses;
+      this.formTemplate[1].row.fields[2].disabled = false;
+    }
   }
 
   @action
   formChangeHandler = async (input: any, allData: any) => {
-    if (input && input.city) {
+    if (input && input.city && input.city.value) {
       this.loadForm = true;
       let { data: data } = await getPrayingHousesList({ offset: 0, limit: 100, filtered: `city.id=${input.city.value}` });
       this.prayingHouses = this.mountPrayingHousesSelectValues(data.content);
@@ -364,7 +376,7 @@ export class VolunteersStore {
     this.form.resetUpdate({
       id: this.id,
       name: volunteerSelected ? volunteerSelected.name : null,
-      city: volunteerSelected && volunteerSelected.city ? volunteerSelected.city.id : null,
+      city: volunteerSelected && volunteerSelected.city ? volunteerSelected.city.id : this.cities[0].id,
       address: volunteerSelected ? volunteerSelected.address : null,
       district: volunteerSelected ? volunteerSelected.district : null,
       zipCode: volunteerSelected ? volunteerSelected.zipCode : null,
@@ -391,7 +403,9 @@ export class VolunteersStore {
     this.formTemplate[4].row.fields[0].defaultValue = volunteerSelected && volunteerSelected.dateOfBaptism ? dateFns.parseISO(volunteerSelected.dateOfBaptism) : null;
     this.formTemplate[5].row.fields[0].defaultValue = volunteerSelected && volunteerSelected.ministryApresentationDate ? dateFns.parseISO(volunteerSelected.ministryApresentationDate) : null;
     this.formTemplate[5].row.fields[0].defaultDate = volunteerSelected ? this.mountMinistryOrPositionSelectValues(volunteerSelected.ministryOrPosition) : null;
-    this.form.handleChangeMultSelect("city", { value: volunteerSelected && volunteerSelected.city ? volunteerSelected.city.id : null });
+    
+    this.form.handleChangeMultSelect("city", { value: volunteerSelected && volunteerSelected.city ? volunteerSelected.city.id : this.cities[0].id });
+    
     this.form.handleChangeMultSelect("naturalness", { value: volunteerSelected && volunteerSelected.naturalness ? volunteerSelected.naturalness.id : null });
     this.form.handleChangeMultSelect("prayingHouse", { value: volunteerSelected && volunteerSelected.prayingHouse ? volunteerSelected.prayingHouse.reportCode : null });
     this.form.handleChangeMultSelect("promise", { value: volunteerSelected ? volunteerSelected.promise : null });
