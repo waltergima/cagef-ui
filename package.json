@@ -13,7 +13,7 @@
     "@types/react-dom": "16.8.4",
     "@types/react-notify-toast": "^0.5.2",
     "@types/react-router-dom": "^4.3.4",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "customize-cra": "^0.2.14",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.7.1",
