@@ -14,6 +14,9 @@ import { create, findAll, remove, update } from '../services';
 import { transformVolunteer } from '../transformer';
 import { Volunteer } from "../types";
 import * as dateFns from 'date-fns';
+import { MyDocument } from '../pdf';
+import { saveAs } from "file-saver";
+import { pdf } from "@react-pdf/renderer";
 
 export class VolunteersStore {
   @observable offset: number = 0;
@@ -42,7 +45,7 @@ export class VolunteersStore {
     {
       Header: "",
       accessor: "action",
-      maxWidth: 100,
+      maxWidth: 150,
       filterable: false,
       Cell: (row: any) => (
         <Button.Group basic size="medium">
@@ -69,6 +72,19 @@ export class VolunteersStore {
               />
             }
             content="Remover registro"
+            inverted
+            position="top center"
+          />
+          <Popup
+            trigger={
+              <Button
+                icon="plus"
+                onClick={() => {
+                  this.generateVolunteerPdf(this, row.original);
+                }}
+              />
+            }
+            content="Detalhes"
             inverted
             position="top center"
           />
@@ -350,6 +366,12 @@ export class VolunteersStore {
       this.formTemplate[1].row.fields[2].disabled = false;
       this.loadForm = false;
     }
+  }
+
+  @action
+  generateVolunteerPdf = async (e: any, volunteerSelected: any) =>  {
+    const blob = await pdf(<MyDocument volunteer={volunteerSelected} />).toBlob();
+    saveAs(blob, `volunteer-${volunteerSelected.name}-${dateFns.format(new Date(), 'dd-MM-yyyy-hh-mm-ss')}`);
   }
 
   private mountMinistryOrPositionSelectValues(obj: any) {

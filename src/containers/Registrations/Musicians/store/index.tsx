@@ -15,6 +15,8 @@ import { transformMusician } from '../transformer';
 import { Musician, Instrument } from "../types";
 import * as dateFns from 'date-fns';
 import { SelectItem } from "../../types";
+import { MyDocument } from "../../Volunteers/pdf";
+import { pdf } from "@react-pdf/renderer";
 
 export class MusiciansStore {
   @observable offset: number = 0;
@@ -42,7 +44,7 @@ export class MusiciansStore {
     {
       Header: "",
       accessor: "action",
-      maxWidth: 100,
+      maxWidth: 150,
       filterable: false,
       Cell: (row: any) => (
         <Button.Group basic size="medium">
@@ -69,6 +71,19 @@ export class MusiciansStore {
               />
             }
             content="Remover registro"
+            inverted
+            position="top center"
+          />
+          <Popup
+            trigger={
+              <Button
+                icon="plus"
+                onClick={() => {
+                  this.generateVolunteerPdf(this, row.original);
+                }}
+              />
+            }
+            content="Detalhes"
             inverted
             position="top center"
           />
@@ -394,6 +409,12 @@ export class MusiciansStore {
       return new SelectItem(item.id, String(item.description), item.id);
     });
   };
+
+  @action
+  generateVolunteerPdf = async (e: any, volunteerSelected: any) =>  {
+    const blob = await pdf(<MyDocument volunteer={volunteerSelected} />).toBlob();
+    saveAs(blob, `volunteer-${volunteerSelected.name}-${dateFns.format(new Date(), 'dd-MM-yyyy-hh-mm-ss')}`);
+  }
 
   private resetUpdate(musicianSelected?: any) {
     this.form.resetUpdate({

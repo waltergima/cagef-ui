@@ -35,3 +35,7 @@
   .ui.avatar.image {
     width: 5em;
   }
+
+  .search {
+    width: 100% !important;
+  }
