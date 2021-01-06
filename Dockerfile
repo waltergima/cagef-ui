@@ -1,4 +1,4 @@
-FROM node:12.16.1
+FROM tarampampam/node:12-alpine
 
 WORKDIR /apps/
 
@@ -6,10 +6,12 @@ COPY package.json .
 
 RUN yarn install
 
-EXPOSE 3000
-
 COPY . .
+
+ENV NODE_ENV=production
 
 RUN yarn run build
 
-CMD [ "node_modules/serve/bin/serve.js", "-s", "build", "-p", "3000" ]
+EXPOSE 3000
+
+ENTRYPOINT [ "node_modules/serve/bin/serve.js", "-s", "build", "-p", "3000", "-n" ]
