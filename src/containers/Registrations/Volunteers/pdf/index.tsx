@@ -123,7 +123,7 @@ function getMusicianProperties(props: any, isMusician = false) {
     </React.Fragment>) : undefined;
 }
 
-export const MyDocument = (props: any, isMusician = false) => (
+export const MyDocument = (props: any) => (
   <Document>
     <Page>
       <View style={styles.container}>
@@ -201,7 +201,7 @@ export const MyDocument = (props: any, isMusician = false) => (
         <Text style={styles.textTitle}>Tem Promessa: </Text>
         <Text style={styles.text}>{props.volunteer.promise ? 'Sim' : 'Não'}</Text>
       </View>
-      {getMusicianProperties(props, true)}
+      {getMusicianProperties(props, props.isMusician)}
     </Page>
   </Document>
 );

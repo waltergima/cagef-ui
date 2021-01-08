@@ -412,7 +412,7 @@ export class MusiciansStore {
 
   @action
   generateVolunteerPdf = async (e: any, volunteerSelected: any) =>  {
-    const blob = await pdf(<MyDocument volunteer={volunteerSelected} />).toBlob();
+    const blob = await pdf(<MyDocument volunteer={volunteerSelected} isMusician={true} />).toBlob();
     saveAs(blob, `volunteer-${volunteerSelected.name}-${dateFns.format(new Date(), 'dd-MM-yyyy-hh-mm-ss')}`);
   }
 
