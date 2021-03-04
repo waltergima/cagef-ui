@@ -1,5 +1,4 @@
 import queryString from "query-string";
-import { getSorted } from "maga-components";
 
 export const parseParams = (value: any) => {
     let filtered: any = {};

@@ -1,5 +1,5 @@
 import magaRequest from "../../../config/request";
-import { LoginRequest, LoginResponse } from "../types";
+import { LoginRequest } from "../types";
 const basePath: string = '/login';
 
 export const login = async (user: LoginRequest): Promise<any> => {

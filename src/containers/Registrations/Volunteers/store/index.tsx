@@ -279,14 +279,14 @@ export class VolunteersStore {
   mountCitiesSelect = async () => {
     try {
       if (hasRole()) {
-        let { data: data } = await getCitiesList({ offset: 0, limit: 20, filtered: 'regional=true' });
-        this.cities = data.content;
+        let { data: response } = await getCitiesList({ offset: 0, limit: 20, filtered: 'regional=true' });
+        this.cities = response.content;
         this.unselectedCities = mountSelectValues(this.cities);
         this.formTemplate[1].row.fields[1].disabled = false;
       } else {
         let cityId = userData().city;
-        let { data: data } = await findCityById(cityId);
-        this.cities = [data];
+        let { data: response } = await findCityById(cityId);
+        this.cities = [response];
         this.unselectedCities = mountSelectValues(this.cities);
         this.formTemplate[1].row.fields[1].disabled = true;
       }
@@ -349,8 +349,8 @@ export class VolunteersStore {
   @action
   handlePrayingHousesSelectChange = async (e: any, itemInput: any) => {
     if(itemInput && itemInput.value) {
-      let { data: data } = await getPrayingHousesList({ offset: 0, limit: 100, filtered: `city.id=${itemInput.value}` });
-      this.prayingHouses = this.mountPrayingHousesSelectValues(data.content);
+      let { data: response } = await getPrayingHousesList({ offset: 0, limit: 100, filtered: `city.id=${itemInput.value}` });
+      this.prayingHouses = this.mountPrayingHousesSelectValues(response.content);
       this.formTemplate[1].row.fields[2].data = this.prayingHouses;
       this.formTemplate[1].row.fields[2].disabled = false;
     }
@@ -360,8 +360,8 @@ export class VolunteersStore {
   formChangeHandler = async (input: any, allData: any) => {
     if (input && input.city && input.city.value) {
       this.loadForm = true;
-      let { data: data } = await getPrayingHousesList({ offset: 0, limit: 100, filtered: `city.id=${input.city.value}` });
-      this.prayingHouses = this.mountPrayingHousesSelectValues(data.content);
+      let { data: response } = await getPrayingHousesList({ offset: 0, limit: 100, filtered: `city.id=${input.city.value}` });
+      this.prayingHouses = this.mountPrayingHousesSelectValues(response.content);
       this.formTemplate[1].row.fields[2].data = this.prayingHouses;
       this.formTemplate[1].row.fields[2].disabled = false;
       this.loadForm = false;

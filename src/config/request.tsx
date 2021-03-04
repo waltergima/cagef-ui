@@ -2,7 +2,6 @@ import axios from "axios";
 import jwt from "jsonwebtoken";
 
 class magaRequest {
-  constructor() { }
 
   get(endpoint: string, modelName: any = {}) {
     return new Promise((resolve, reject) => {

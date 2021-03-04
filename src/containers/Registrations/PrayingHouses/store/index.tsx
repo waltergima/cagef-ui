@@ -112,13 +112,10 @@ export class PrayingHousesStore {
       this.unselectedCities = mountSelectValues(this.cities);
       this.formTemplate[0].row.fields[2].disabled = false;
     } else {
-      let { data: data } = await findById(userData().city);
-      this.cities = [data];
+      let { data: response } = await findById(userData().city);
+      this.cities = [response];
       this.unselectedCities = mountSelectValues(this.cities);
       this.formTemplate[0].row.fields[2].disabled = true;
-      /* this.form.resetUpdate({
-        city: userData().city
-      }); */
     }
     this.formTemplate[0].row.fields[2].data = this.unselectedCities;
   };

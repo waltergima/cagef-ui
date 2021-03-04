@@ -39,3 +39,7 @@
   .search {
     width: 100% !important;
   }
+
+  div.right.menu div.ui.item.simple.dropdown:first-child {
+    display: none
+  }
