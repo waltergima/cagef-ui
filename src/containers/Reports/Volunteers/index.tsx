@@ -27,7 +27,7 @@ export default class VolunteersReport extends React.Component<Props> {
         charts.push(
           <Chart
             width={'1000'}
-            height={'950px'}
+            height={'750px'}
             chartType="Bar"
             loader={<div>Gerando gráfico</div>}
             data={[this.props.VolunteersReportStore.data[0], this.props.VolunteersReportStore.data[i]]}

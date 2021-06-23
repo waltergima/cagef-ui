@@ -103,8 +103,8 @@ export class MinisteriesOrPositionsStore {
 
   @action
   prepareCreateMinistryOrPosition = async (e: any) => {
-    this.loadForm = true;
     this.form.resetForm();
+    this.loadForm = true;
     this.actionType = "CREATE";
     this.resetUpdate();
     this.loadForm = false;
@@ -212,8 +212,9 @@ export class MinisteriesOrPositionsStore {
   private resetUpdate(selectedMinistryOrPosition?: MinistryOrPosition) {
     this.form.resetUpdate({
       id: this.id,
-      description: selectedMinistryOrPosition ? selectedMinistryOrPosition.description : null
+      description: (selectedMinistryOrPosition ? selectedMinistryOrPosition.description : null)
     });
+    this.form.handleChangeMultSelect("description", (selectedMinistryOrPosition ? selectedMinistryOrPosition.description : null));
   }
 
   @computed

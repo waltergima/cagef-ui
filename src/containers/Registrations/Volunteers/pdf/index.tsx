@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
     marginRight: 50
   },
-  spacer: {    
+  spacer: {
     flexGrow: 0.2,
   },
 });
@@ -80,7 +80,7 @@ const getProperty = (volunteer: any, propertyName: string) => {
 
 const getDate = (date: string) => {
   const subs = date ? date.split('-') : NOT_INFORMED;
-  return Array.isArray(subs) ? dateFns.format(new Date(Number(subs[0]), Number(subs[1]) - 1, Number(subs[2])), 'dd/MM/yyyy', {locale: ptBRLocale}) : subs;
+  return Array.isArray(subs) ? dateFns.format(new Date(Number(subs[0]), Number(subs[1]) - 1, Number(subs[2])), 'dd/MM/yyyy', { locale: ptBRLocale }) : subs;
 }
 
 Font.register({
@@ -154,14 +154,14 @@ export const MyDocument = (props: any) => (
       </View>
       <View style={styles.container}>
         <Text style={styles.textTitle}>Cidade: </Text>
-        <Text style={styles.text}>{props.volunteer.city ? props.volunteer.city.name: NOT_INFORMED}</Text>
+        <Text style={styles.text}>{props.volunteer.city ? props.volunteer.city.name : NOT_INFORMED}</Text>
         <Text style={styles.spacer} />
         <Text style={styles.textTitle}>Comum Congregação: </Text>
-        <Text style={styles.text}>{getProperty(props.volunteer.prayingHouse, 'name')}</Text>
+        <Text style={styles.text}>{props.volunteer.prayingHouse ? props.volunteer.prayingHouse.name : NOT_INFORMED}</Text>
       </View>
       <View style={styles.container}>
         <Text style={styles.textTitle}>Naturalidade: </Text>
-        <Text style={styles.text}>{props.volunteer.naturalness ? props.volunteer.naturalness.name: NOT_INFORMED}</Text>
+        <Text style={styles.text}>{props.volunteer.naturalness ? props.volunteer.naturalness.name : NOT_INFORMED}</Text>
       </View>
       <View style={styles.container}>
         <Text style={styles.textTitle}>Estado Civil: </Text>
@@ -169,15 +169,15 @@ export const MyDocument = (props: any) => (
       </View>
       <View style={styles.container}>
         <Text style={styles.textTitle}>Endereço: </Text>
-        <Text style={styles.text}>{`Rua: ${getProperty(props.volunteer, 'address')}, Bairro: ${getProperty(props.volunteer,'district')}, CEP: ${getProperty(props.volunteer, 'zipCode')}`}</Text>
+        <Text style={styles.text}>{`Rua: ${getProperty(props.volunteer, 'address')}, Bairro: ${getProperty(props.volunteer, 'district')}, CEP: ${getProperty(props.volunteer, 'zipCode')}`}</Text>
       </View>
       <View style={styles.topic}>
         <Text>Contato</Text>
       </View>
       <View style={styles.container}>
-          <Text style={styles.textTitle}>Email: </Text>
-          <Text style={styles.text}>{getProperty(props.volunteer, 'email')}</Text>
-        </View>
+        <Text style={styles.textTitle}>Email: </Text>
+        <Text style={styles.text}>{getProperty(props.volunteer, 'email')}</Text>
+      </View>
       <View style={styles.container}>
         <Text style={styles.textTitle}>Telefone: </Text>
         <Text style={styles.text}>{getProperty(props.volunteer, 'phoneNumber')}</Text>
